@@ -1,0 +1,6 @@
+[submodule "seL4"]
+	path = seL4
+	url = https://gitlab.com/coliasgroup/seL4.git
+[submodule "rust-seL4"]
+	path = rust-seL4
+	url = https://gitlab.com/coliasgroup/rust-seL4.git
