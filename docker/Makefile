@@ -1,6 +1,6 @@
 work_root := ..
 
-label := rust-sel4-cmake-demo
+label := rust-sel4-simple-build-system-demo
 image_repository := $(label)
 image_tag := $(image_repository)
 container_name := $(label)

@@ -6,10 +6,10 @@ This repository demonstrates the use of the [rust-seL4](https://gitlab.com/colia
 
 The only requirements for getting started are Git, Make, and Docker.
 
-First, clone this respository:
+First, clone this respository and its submodules:
 
 ```
-git clone https://gitlab.com/coliasgroup/rust-seL4-simple-build-system-demo
+git clone --recursive https://gitlab.com/coliasgroup/rust-seL4-simple-build-system-demo
 cd rust-seL4-simple-build-system-demo
 ```
 
@@ -22,6 +22,5 @@ make -C docker/ run && make -C docker/ exec
 Finally, inside the container, build and emulate a simple seL4-based system with a root task written in Rust:
 
 ```
-make install-kernel
-make run
+make install-kernel && make run
 ```
