@@ -7,6 +7,8 @@ none:
 clean:
 	rm -rf $(build_dir)
 
+### Kernel
+
 kernel_source_dir := seL4
 kernel_build_dir := $(build_dir)/kernel/build
 kernel_install_dir := $(build_dir)/kernel/install
@@ -24,18 +26,18 @@ configure-kernel:
 		-S $(kernel_source_dir) \
 		-B $(kernel_build_dir)
 
-build_kernel_intermediate := $(build_dir)/kernel/build.intermediate
-
-.INTERMDIATE: $(build_kernel_intermediate)
-$(build_kernel_intermediate): configure-kernel
+.PHONY: build-kernel
+build-kernel: configure-kernel
 	ninja -C $(kernel_build_dir) all
 
 .PHONY: install-kernel
-install-kernel: $(build_kernel_intermediate)
+install-kernel: build-kernel
 	ninja -C $(kernel_build_dir) install
 	install -D -T $(kernel_build_dir)/gen_config/kernel/gen_config.json $(kernel_install_dir)/support/config.json
 	install -D -T $(kernel_build_dir)/kernel.dtb $(kernel_install_dir)/support/kernel.dtb
 	install -D -T $(kernel_build_dir)/gen_headers/plat/machine/platform_gen.yaml $(kernel_install_dir)/support/platform-info.yaml
+
+### Userspace
 
 rust_source_dir := rust-seL4
 manifest_path := $(rust_source_dir)/Cargo.toml
@@ -85,8 +87,6 @@ $(loader_intermediate): $(app)
 run: $(loader)
 	qemu-system-aarch64 \
 		-machine virt,virtualization=on \
-		-cpu cortex-a57 \
-		-smp 2 -m 1024 \
-		-nographic \
-		-serial mon:stdio \
+		-cpu cortex-a57 -smp 2 -m 1024 \
+		-nographic -serial mon:stdio \
 		-kernel $<
