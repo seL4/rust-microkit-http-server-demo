@@ -1,11 +1,8 @@
 FROM trustworthysystems/sel4
 
 RUN apt-get update -q && apt-get install -y --no-install-recommends \
-    ca-certificates \
-    gcc \
-    libc6-dev \
     wget \
-    sudo man vim rsync procps \
+    sudo man vim \
     bash-completion \
     && rm -rf /var/lib/apt/lists/*
 

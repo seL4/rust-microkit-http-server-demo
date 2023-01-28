@@ -39,23 +39,31 @@ install-kernel: build-kernel
 
 ### Userspace
 
-rust_source_dir := rust-seL4
-manifest_path := $(rust_source_dir)/Cargo.toml
-rust_target_path := $(rust_source_dir)/support/targets
-target_dir := $(build_dir)/target
-rust_sel4_target := aarch64-unknown-sel4
+rust_target_path := support/targets
+rust_sel4_target := aarch64-sel4
 rust_bare_metal_target := aarch64-unknown-none
+target_dir := $(build_dir)/target
+cargo_root_dir := $(build_dir)/cargo-root
 
-cargo_build := \
+remote_options := \
+	--git https://gitlab.com/coliasgroup/rust-seL4 \
+	--rev 30450f7666fb3a7d3946b7d334434128889de30a
+
+build_std_options := \
+	-Z build-std=core,alloc,compiler_builtins \
+	-Z build-std-features=compiler-builtins-mem
+
+common_env := \
 	RUST_TARGET_PATH=$(abspath $(rust_target_path)) \
 	SEL4_PREFIX=$(abspath $(kernel_install_dir)) \
-		cargo build \
-			--locked \
-			--manifest-path $(abspath $(manifest_path)) \
-			--target-dir $(abspath $(target_dir)) \
-			--out-dir $(build_dir)
 
-app_crate := minimal-with-state
+common_options := \
+	--locked \
+	-Z unstable-options \
+	$(build_std_options) \
+	--target-dir $(abspath $(target_dir))
+
+app_crate := example
 app := $(build_dir)/$(app_crate).elf
 app_intermediate := $(build_dir)/app.intermediate
 
@@ -63,12 +71,15 @@ $(app): $(app_intermediate)
 
 .INTERMDIATE: $(app_intermediate)
 $(app_intermediate):
-	$(cargo_build) \
-		--target $(rust_sel4_target) \
-		-p $(app_crate)
+	$(common_env) \
+		cargo build \
+			$(common_options) \
+			-p $(app_crate) \
+			--target $(rust_sel4_target) \
+			--out-dir $(build_dir)
 
 loader_crate := loader
-loader := $(build_dir)/$(loader_crate)
+loader := $(cargo_root_dir)/bin/$(loader_crate)
 loader_intermediate := $(build_dir)/loader.intermediate
 loader_config := loader-config.json
 
@@ -76,12 +87,16 @@ $(loader): $(loader_intermediate)
 
 .INTERMDIATE: $(loader_intermediate)
 $(loader_intermediate): $(app)
+	$(common_env) \
 	CC=$(cross_compiler_prefix)gcc \
 	SEL4_APP=$(abspath $(app)) \
 	SEL4_LOADER_CONFIG=$(abspath $(loader_config)) \
-		$(cargo_build) \
+		cargo install \
+			$(common_options) \
+			loader \
+			$(remote_options) \
 			--target $(rust_bare_metal_target) \
-			-p $(loader_crate)
+			--root $(abspath $(cargo_root_dir))
 
 .PHONY: run
 run: $(loader)

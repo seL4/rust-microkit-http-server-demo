@@ -1,0 +1,15 @@
+[package]
+name = "example"
+version = "0.1.0"
+authors = ["Nick Spinale <nick.spinale@coliasgroup.com>"]
+edition = "2021"
+license = "BSD-2-Clause"
+
+[dependencies.sel4]
+git = "https://gitlab.com/coliasgroup/rust-seL4"
+rev = "30450f7666fb3a7d3946b7d334434128889de30a"
+
+[dependencies.sel4-full-root-task-runtime]
+git = "https://gitlab.com/coliasgroup/rust-seL4"
+rev = "30450f7666fb3a7d3946b7d334434128889de30a"
+features = ["full"]
