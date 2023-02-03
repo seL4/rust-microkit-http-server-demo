@@ -9,8 +9,8 @@ The only requirements for getting started are Git, Make, and Docker.
 First, clone this respository and its submodules:
 
 ```
-git clone --recursive https://gitlab.com/coliasgroup/rust-seL4-simple-build-system-demo
-cd rust-seL4-simple-build-system-demo
+git clone --recursive https://gitlab.com/coliasgroup/rust-seL4-demos/simple-build-system-demo.git
+cd simple-build-system-demo
 ```
 
 Next, build, run, and enter a Docker container for development:
