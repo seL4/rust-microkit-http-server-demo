@@ -7,9 +7,8 @@ license = "BSD-2-Clause"
 
 [dependencies.sel4]
 git = "https://gitlab.com/coliasgroup/rust-seL4"
-rev = "30450f7666fb3a7d3946b7d334434128889de30a"
+rev = "7240d83b79ff8263e42ee0fd66a15189825dac99"
 
-[dependencies.sel4-full-root-task-runtime]
+[dependencies.sel4-root-task-runtime]
 git = "https://gitlab.com/coliasgroup/rust-seL4"
-rev = "30450f7666fb3a7d3946b7d334434128889de30a"
-features = ["full"]
+rev = "7240d83b79ff8263e42ee0fd66a15189825dac99"

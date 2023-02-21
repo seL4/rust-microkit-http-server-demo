@@ -47,7 +47,7 @@ cargo_root_dir := $(build_dir)/cargo-root
 
 remote_options := \
 	--git https://gitlab.com/coliasgroup/rust-seL4 \
-	--rev 30450f7666fb3a7d3946b7d334434128889de30a
+	--rev 7240d83b79ff8263e42ee0fd66a15189825dac99
 
 build_std_options := \
 	-Z build-std=core,alloc,compiler_builtins \
@@ -60,6 +60,7 @@ common_env := \
 common_options := \
 	--locked \
 	-Z unstable-options \
+	-Z bindeps \
 	$(build_std_options) \
 	--target-dir $(abspath $(target_dir))
 
