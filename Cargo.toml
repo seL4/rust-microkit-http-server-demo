@@ -3,5 +3,7 @@
 resolver = "2"
 
 members = [
-    "crates/example",
+    "crates/artist",
+    "crates/assistant",
+    "crates/pl011-driver",
 ]

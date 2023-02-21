@@ -1,0 +1,18 @@
+[package]
+name = "banscii-artist"
+version = "0.1.0"
+authors = ["Nick Spinale <nick.spinale@coliasgroup.com>"]
+edition = "2021"
+license = "BSD-2-Clause"
+
+[dependencies]
+banscii-artist-interface-types = { path = "./interface-types" }
+rsa = { version = "0.8.1", default-features = false, features = ["pem", "sha2"] }
+
+[dependencies.sel4cp]
+git = "https://gitlab.com/coliasgroup/rust-seL4"
+rev = "8c908d4cf8ef39ee3445995851655c42851f20d1"
+features = ["alloc"]
+
+[build-dependencies]
+rsa = "0.8.1"

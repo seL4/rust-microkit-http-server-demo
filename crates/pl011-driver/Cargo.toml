@@ -1,0 +1,16 @@
+[package]
+name = "banscii-pl011-driver"
+version = "0.1.0"
+authors = ["Nick Spinale <nick.spinale@coliasgroup.com>"]
+edition = "2021"
+license = "BSD-2-Clause"
+
+[dependencies]
+banscii-pl011-driver-interface-types = { path = "./interface-types" }
+heapless = "*"
+tock-registers = "*"
+
+[dependencies.sel4cp]
+git = "https://gitlab.com/coliasgroup/rust-seL4"
+rev = "8c908d4cf8ef39ee3445995851655c42851f20d1"
+default-features = false
