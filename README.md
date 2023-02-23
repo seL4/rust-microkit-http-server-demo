@@ -9,17 +9,13 @@ These devices will contain his most precious artistic secrets, along with crypto
 
 The Banscii system is comprised of three components:
 
-- `pl011-driver`: (untrusted)
+- `pl011-driver` (untrusted):
     Serial driver.
-- `assistant`: (untrusted)
-    Interacts with the human operator with a text interface via `pl011-driver` to receive subject material and return authentic Bansky pieces.
-    The assistant takes a subject (a string), renders it to greyscale ASCII art using a TrueType font, and then passes it to `artist` for completion.
-- `artist`: (trusted)
+- `assistant` (untrusted):
+    Interacts with the human operator with a text interface via `pl011-driver` to receive subject material and, in concert with `artist`, return authentic works of art.
+    `assistant` takes a subject (a string), renders it to greyscale ASCII art using a TrueType font, and then passes it to `artist` for completion.
+- `artist` (trusted):
     Receives drafts from `assistant`, which it completes, digitally signs, and then returns as authentic Bansky pieces.
-
-```
-TODO: more
-```
 
 ### Rustdoc for the `sel4cp` crate
 
