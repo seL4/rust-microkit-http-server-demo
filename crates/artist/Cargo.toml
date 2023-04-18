@@ -11,7 +11,7 @@ rsa = { version = "0.8.1", default-features = false, features = ["pem", "sha2"] 
 
 [dependencies.sel4cp]
 git = "https://gitlab.com/coliasgroup/rust-seL4"
-rev = "8c908d4cf8ef39ee3445995851655c42851f20d1"
+rev = "3a9027494ab7fd40eb8ca1d8231350fd47e4b813"
 features = ["alloc"]
 
 [build-dependencies]
