@@ -6,11 +6,9 @@
 
 extern crate alloc;
 
-use sel4cp::memory_region::{
-    declare_memory_region, MemoryRegion, ReadOnly, ReadWrite, VolatileSliceExt,
-};
+use sel4cp::memory_region::{declare_memory_region, MemoryRegion, ReadOnly, ReadWrite};
 use sel4cp::message::{MessageInfo, NoMessageValue, StatusMessageLabel};
-use sel4cp::{main, Channel, Handler};
+use sel4cp::{protection_domain, Channel, Handler};
 
 use banscii_artist_interface_types::*;
 
@@ -23,8 +21,8 @@ const ASSISTANT: Channel = Channel::new(0);
 
 const REGION_SIZE: usize = 0x4_000;
 
-#[main(heap_size = 0x10000)]
-fn main() -> ThisHandler {
+#[protection_domain(heap_size = 0x10000)]
+fn init() -> ThisHandler {
     let region_in = unsafe {
         declare_memory_region! {
             <[u8], ReadOnly>(region_in_start, REGION_SIZE)

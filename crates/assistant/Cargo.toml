@@ -9,9 +9,9 @@ license = "BSD-2-Clause"
 banscii-artist-interface-types = { path = "../artist/interface-types" }
 banscii-assistant-core = { path = "./core" }
 banscii-pl011-driver-interface-types = { path = "../pl011-driver/interface-types" }
-hex = { version = "*", default-features = false, features = ["alloc"] }
+hex = { version = "0.4.3", default-features = false, features = ["alloc"] }
 
 [dependencies.sel4cp]
 git = "https://gitlab.com/coliasgroup/rust-seL4"
-rev = "3a9027494ab7fd40eb8ca1d8231350fd47e4b813"
+rev = "96b27b7ed5c7ad1c53d5b7adca159d3fc5283b9e"
 features = ["alloc"]
