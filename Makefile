@@ -22,7 +22,7 @@ clean:
 
 ### seL4 Core Platform SDK
 
-.PHONY:
+.PHONY: setup-sel4cp-sdk-venv
 setup-sel4cp-sdk-venv:
 	cd $(sel4cp_source_dir) && \
 		python3.9 -m venv pyenv && \
@@ -30,7 +30,7 @@ setup-sel4cp-sdk-venv:
 		./pyenv/bin/pip install -r requirements.txt && \
 		./pyenv/bin/pip install sel4-deps
 
-.PHONY:
+.PHONY: build-sel4cp-sdk
 build-sel4cp-sdk: setup-sel4cp-sdk-venv
 	cd $(sel4cp_source_dir) && \
 		./pyenv/bin/python3 build_sdk.py --sel4 $(abspath $(kernel_source_dir))
