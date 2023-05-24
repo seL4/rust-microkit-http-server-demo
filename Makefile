@@ -20,10 +20,10 @@ clean:
 		$(sel4cp_source_dir)/pyenv \
 		$(sel4cp_source_dir)/tool/build
 
-### sel4cp SDK
+### seL4 Core Platform SDK
 
 .PHONY:
-create-sel4cp-sdk-venv:
+setup-sel4cp-sdk-venv:
 	cd $(sel4cp_source_dir) && \
 		python3.9 -m venv pyenv && \
 		./pyenv/bin/pip install --upgrade pip setuptools wheel && \
@@ -31,7 +31,7 @@ create-sel4cp-sdk-venv:
 		./pyenv/bin/pip install sel4-deps
 
 .PHONY:
-build-sel4cp-sdk: create-sel4cp-sdk-venv
+build-sel4cp-sdk: setup-sel4cp-sdk-venv
 	cd $(sel4cp_source_dir) && \
 		./pyenv/bin/python3 build_sdk.py --sel4 $(abspath $(kernel_source_dir))
 
