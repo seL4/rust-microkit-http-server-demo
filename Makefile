@@ -16,7 +16,9 @@ clean:
 	rm -rf \
 		$(build_dir) \
 		$(sel4cp_source_dir)/build \
-		$(sel4cp_source_dir)/release
+		$(sel4cp_source_dir)/release \
+		$(sel4cp_source_dir)/pyenv \
+		$(sel4cp_source_dir)/tool/build
 
 ### sel4cp SDK
 
@@ -51,64 +53,45 @@ common_options := \
 	--target-dir $(abspath $(target_dir)) \
 	--out-dir $(build_dir)
 
-artist_crate := banscii-artist
-artist := $(build_dir)/$(artist_crate).elf
-artist_intermediate := $(build_dir)/artist.intermediate
+target_for_crate = $(build_dir)/$(1).elf
+intermediate_target_for_crate = $(build_dir)/$(1).intermediate
 
-$(artist): $(artist_intermediate)
+define build_crate
 
-.INTERMDIATE: $(artist_intermediate)
-$(artist_intermediate):
-	$(common_env) \
+$(target_for_crate): $(intermediate_target_for_crate)
+
+.INTERMDIATE: $(intermediate_target_for_crate)
+$(intermediate_target_for_crate):
+	$$(common_env) \
 		cargo build \
-			$(common_options) \
-			-p $(artist_crate)
+			$$(common_options) \
+			-p $(1)
 
-assistant_crate := banscii-assistant
-assistant := $(build_dir)/$(assistant_crate).elf
-assistant_intermediate := $(build_dir)/assistant.intermediate
+endef
 
-$(assistant): $(assistant_intermediate)
+crates := \
+	banscii-artist \
+	banscii-assistant \
+	banscii-pl011-driver
 
-.INTERMDIATE: $(assistant_intermediate)
-$(assistant_intermediate):
-	$(common_env) \
-		cargo build \
-			$(common_options) \
-			-p $(assistant_crate)
+built_crates := $(foreach crate,$(crates),$(call target_for_crate,$(crate)))
 
-pl011_driver_crate := banscii-pl011-driver
-pl011_driver := $(build_dir)/$(pl011_driver_crate).elf
-pl011_driver_intermediate := $(build_dir)/pl011_driver.intermediate
-
-$(pl011_driver): $(pl011_driver_intermediate)
-
-.INTERMDIATE: $(pl011_driver_intermediate)
-$(pl011_driver_intermediate):
-	$(common_env) \
-		cargo build \
-			$(common_options) \
-			-p $(pl011_driver_crate)
+$(eval $(foreach crate,$(crates),$(call build_crate,$(crate))))
 
 ### Loader
 
+system_description := banscii.system
+
 loader := $(build_dir)/loader.img
-loader_intermediate := $(build_dir)/loader.intermediate
 
-$(loader): $(loader_intermediate)
-
-# TODO get pyoxidizer working
-.PHONY: $(loader_intermediate)
-$(loader_intermediate): $(assistant) $(artist) $(pl011_driver)
-	PYTHONPATH=$(sel4cp_source_dir)/tool:$$PYTHONPATH \
-	SEL4CP_SDK=$(sel4cp_sdk_dir) \
-		python3 -m sel4coreplat \
-			banscii.system \
-			--search-path $(build_dir) \
-			--board $(sel4cp_board) \
-			--config $(sel4cp_config) \
-			-o $(build_dir)/loader.img \
-			-r $(build_dir)/report.txt
+$(loader): $(system_description) $(built_crates)
+	$(sel4cp_sdk_dir)/bin/sel4cp \
+		$< \
+		--search-path $(build_dir) \
+		--board $(sel4cp_board) \
+		--config $(sel4cp_config) \
+		-r $(build_dir)/report.txt \
+		-o $(build_dir)/loader.img
 
 .PHONY: run
 run: $(loader)
