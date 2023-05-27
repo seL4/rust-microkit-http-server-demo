@@ -12,5 +12,4 @@ tock-registers = "0.8.1"
 
 [dependencies.sel4cp]
 git = "https://gitlab.com/coliasgroup/rust-seL4"
-rev = "96b27b7ed5c7ad1c53d5b7adca159d3fc5283b9e"
 default-features = false

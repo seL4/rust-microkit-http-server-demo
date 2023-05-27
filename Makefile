@@ -91,7 +91,7 @@ $(loader): $(system_description) $(built_crates)
 		--board $(sel4cp_board) \
 		--config $(sel4cp_config) \
 		-r $(build_dir)/report.txt \
-		-o $(build_dir)/loader.img
+		-o $@
 
 .PHONY: run
 run: $(loader)
