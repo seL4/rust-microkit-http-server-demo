@@ -13,12 +13,6 @@ RUN apt-get update -q && apt-get install -y --no-install-recommends \
     texlive-fonts-extra \
     && rm -rf /var/lib/apt/lists/*
 
-RUN echo 'deb http://deb.debian.org/debian bullseye-backports main' > /etc/apt/sources.list.d/backports.list
-
-RUN apt-get update -q && apt-get install -y --no-install-recommends \
-        -t bullseye-backports \
-        cmake
-
 # Derived from:
 # https://hub.docker.com/r/rustlang/rust/dockerfile
 
