@@ -1,6 +1,0 @@
-[submodule "seL4"]
-	path = seL4
-	url = https://gitlab.com/coliasgroup/seL4.git
-[submodule "sel4cp"]
-	path = sel4cp
-	url = https://gitlab.com/coliasgroup/sel4cp.git

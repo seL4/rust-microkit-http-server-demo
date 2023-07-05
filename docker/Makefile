@@ -1,6 +1,6 @@
 work_root := ..
 
-label := rust-sel4-simple-sel4cp-demo
+label := rust-sel4-sel4cp-demo
 image_repository := $(label)
 image_tag := $(image_repository)
 container_name := $(label)

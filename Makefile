@@ -1,39 +1,15 @@
 build_dir := build
 
-kernel_source_dir := seL4
-sel4cp_source_dir := sel4cp
-
 sel4cp_board := qemu_arm_virt
 sel4cp_config := debug
-sel4cp_sdk_dir := $(sel4cp_source_dir)/release/sel4cp-sdk-1.2.6
-sel4cp_sdk_config_dir := $(sel4cp_sdk_dir)/board/$(sel4cp_board)/$(sel4cp_config)
+sel4cp_sdk_config_dir := $(SEL4CP_SDK)/board/$(sel4cp_board)/$(sel4cp_config)
 
 .PHONY: none
 none:
 
 .PHONY: clean
 clean:
-	rm -rf \
-		$(build_dir) \
-		$(sel4cp_source_dir)/build \
-		$(sel4cp_source_dir)/release \
-		$(sel4cp_source_dir)/pyenv \
-		$(sel4cp_source_dir)/tool/build
-
-### seL4 Core Platform SDK
-
-.PHONY: setup-sel4cp-sdk-venv
-setup-sel4cp-sdk-venv:
-	cd $(sel4cp_source_dir) && \
-		python3.9 -m venv pyenv && \
-		./pyenv/bin/pip install --upgrade pip setuptools wheel && \
-		./pyenv/bin/pip install -r requirements.txt && \
-		./pyenv/bin/pip install sel4-deps
-
-.PHONY: build-sel4cp-sdk
-build-sel4cp-sdk: setup-sel4cp-sdk-venv
-	cd $(sel4cp_source_dir) && \
-		./pyenv/bin/python3 build_sdk.py --sel4 $(abspath $(kernel_source_dir))
+	rm -rf $(build_dir)
 
 ### Protection domains
 
@@ -51,7 +27,7 @@ common_options := \
 	--target $(rust_sel4cp_target) \
 	--release \
 	--target-dir $(abspath $(target_dir)) \
-	--out-dir $(build_dir)
+	--out-dir $(abspath $(build_dir))
 
 target_for_crate = $(build_dir)/$(1).elf
 intermediate_target_for_crate = $(build_dir)/$(1).intermediate
@@ -85,7 +61,7 @@ system_description := banscii.system
 loader := $(build_dir)/loader.img
 
 $(loader): $(system_description) $(built_crates)
-	$(sel4cp_sdk_dir)/bin/sel4cp \
+	$(SEL4CP_SDK)/bin/sel4cp \
 		$< \
 		--search-path $(build_dir) \
 		--board $(sel4cp_board) \

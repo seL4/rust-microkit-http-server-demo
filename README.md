@@ -1,6 +1,6 @@
 # Banscii
 
-This repository demonstrates the use of the [rust-seL4](https://gitlab.com/coliasgroup/rust-seL4) crates with the [seL4 Core Platform](https://github.com/BreakawayConsulting/sel4cp).
+This repository demonstrates the use of the [rust-seL4](https://github.com/coliasgroup/rust-seL4) crates with the [seL4 Core Platform](https://github.com/BreakawayConsulting/sel4cp).
 
 Banksy has been struggling to keep up with the growing demand for his art.
 He has decided to leverage trustworthy operating system technology to scale up production without compromising the integrity or value of his work.
@@ -19,17 +19,17 @@ The Banscii system is comprised of three components:
 
 ### Rustdoc for the `sel4cp` crate
 
-https://coliasgroup.gitlab.io/rust-seL4-html/views/aarch64-sel4cp/aarch64-sel4cp/doc/sel4cp/index.html
+https://coliasgroup.com/rust-seL4-html/views/aarch64-sel4cp/aarch64-sel4cp/doc/sel4cp/index.html
 
 ### Quick start
 
 The only requirements for getting started are Git, Make, and Docker.
 
-First, clone this respository and its submodules:
+First, clone this respository:
 
 ```
-git clone --recursive https://gitlab.com/coliasgroup/rust-seL4-demos/simple-sel4cp-demo.git
-cd simple-sel4cp-demo
+git clone https://github.com/coliasgroup/rust-seL4-sel4cp-demo.git
+cd rust-seL4-sel4cp-demo
 ```
 
 Next, build, run, and enter a Docker container for development:
@@ -41,7 +41,7 @@ make -C docker/ run && make -C docker/ exec
 Inside the container, build and emulate the demo:
 
 ```
-make build-sel4cp-sdk && make run
+make run
 ```
 
 At the prompt, enter some text:

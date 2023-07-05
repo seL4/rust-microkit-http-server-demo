@@ -1,3 +1,5 @@
+# This repo's code mirrors that of a demo found in the rust-seL4 repo.
+
 set -eu
 
 external_rust_seL4_dir=../../rust-seL4

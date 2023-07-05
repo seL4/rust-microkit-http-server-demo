@@ -8,7 +8,7 @@ license = "BSD-2-Clause"
 [dependencies]
 banscii-artist-interface-types = { path = "./interface-types" }
 rsa = { version = "0.8.1", default-features = false, features = ["pem", "sha2"] }
-sel4cp = { git = "https://gitlab.com/coliasgroup/rust-seL4", default-features = false, features = ["alloc"] }
+sel4cp = { git = "https://github.com/coliasgroup/rust-seL4", default-features = false, features = ["alloc"] }
 
 [build-dependencies]
 rsa = "0.8.1"
