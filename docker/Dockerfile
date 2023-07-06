@@ -61,13 +61,13 @@ RUN git clone \
         --config advice.detachedHead=false
 
 RUN cd sel4cp && \
-		python3.9 -m venv pyenv && \
-		./pyenv/bin/pip install --upgrade pip setuptools wheel && \
-		./pyenv/bin/pip install -r requirements.txt && \
-		./pyenv/bin/pip install sel4-deps
+        python3.9 -m venv pyenv && \
+        ./pyenv/bin/pip install --upgrade pip setuptools wheel && \
+        ./pyenv/bin/pip install -r requirements.txt && \
+        ./pyenv/bin/pip install sel4-deps
 
 RUN cd sel4cp && \
-		./pyenv/bin/python3 build_sdk.py --sel4 ../seL4 && \
+        ./pyenv/bin/python3 build_sdk.py --sel4 ../seL4 && \
         chmod a+rwX release/sel4cp-sdk-$SEL4CP_SDK_VERSION/bin/sel4cp
 
 ENV SEL4CP_SDK=/deps/sel4cp/release/sel4cp-sdk-$SEL4CP_SDK_VERSION
