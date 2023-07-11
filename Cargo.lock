@@ -41,6 +41,7 @@ version = "0.1.0"
 dependencies = [
  "banscii-artist-interface-types",
  "rsa",
+ "sel4-externally-shared",
  "sel4cp",
 ]
 
@@ -60,6 +61,7 @@ dependencies = [
  "banscii-assistant-core",
  "banscii-pl011-driver-interface-types",
  "hex",
+ "sel4-externally-shared",
  "sel4cp",
 ]
 
