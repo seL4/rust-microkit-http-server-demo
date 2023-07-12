@@ -7,3 +7,10 @@ members = [
     "crates/assistant",
     "crates/pl011-driver",
 ]
+
+[workspace.dependencies.sel4cp]
+git = "https://github.com/coliasgroup/rust-seL4"
+default-features = false
+
+[workspace.dependencies.sel4-externally-shared]
+git = "https://github.com/coliasgroup/rust-seL4"

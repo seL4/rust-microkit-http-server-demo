@@ -10,7 +10,7 @@ banscii-artist-interface-types = { path = "../artist/interface-types" }
 banscii-assistant-core = { path = "./core" }
 banscii-pl011-driver-interface-types = { path = "../pl011-driver/interface-types" }
 hex = { version = "0.4.3", default-features = false, features = ["alloc"] }
-sel4cp = { git = "https://github.com/coliasgroup/rust-seL4", default-features = false, features = ["alloc"] }
+sel4cp = { workspace = true, features = ["alloc"] }
 
 [dependencies.sel4-externally-shared]
 git = "https://github.com/coliasgroup/rust-seL4"
