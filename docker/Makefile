@@ -31,3 +31,10 @@ rm-container:
 	for id in $$(docker ps -aq -f "name=^$(container_name)$$"); do \
 		docker rm -f $$id; \
 	done
+
+.PHONY: test
+test: build
+	docker run --rm \
+		--mount type=bind,readonly,src=$(abspath ..),dst=/work \
+		-i $(image_tag) \
+		make test BUILD=/tmp/build

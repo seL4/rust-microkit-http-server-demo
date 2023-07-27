@@ -1,4 +1,6 @@
-build_dir := build
+BUILD ?= build
+
+build_dir := $(BUILD)
 
 sel4cp_board := qemu_arm_virt
 sel4cp_config := debug
