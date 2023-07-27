@@ -1,58 +1,28 @@
 FROM trustworthysystems/sel4
 
+WORKDIR /tmp
+
+RUN rm -r *
+
 RUN apt-get update -q && apt-get install -y --no-install-recommends \
-    wget \
-    sudo man vim \
-    bash-completion \
     python3-venv \
     musl-tools \
     pandoc \
     texlive-latex-base \
     texlive-latex-extra \
     texlive-fonts-recommended \
-    texlive-fonts-extra \
     && rm -rf /var/lib/apt/lists/*
-
-# Derived from:
-# https://hub.docker.com/r/rustlang/rust/dockerfile
-
-ENV RUSTUP_HOME=/usr/local/rustup \
-    CARGO_HOME=/usr/local/cargo \
-    PATH=/usr/local/cargo/bin:$PATH
-
-RUN set -eux; \
-    url="https://static.rust-lang.org/rustup/dist/x86_64-unknown-linux-gnu/rustup-init"; \
-    wget "$url"; \
-    chmod +x rustup-init; \
-    ./rustup-init -y --no-modify-path --default-toolchain nightly; \
-    rm rustup-init; \
-    chmod -R a+w $RUSTUP_HOME $CARGO_HOME; \
-    rustup --version; \
-    cargo --version; \
-    rustc --version;
-
-ENV CARGO_HOME=
 
 RUN set -eux; \
     url="https://developer.arm.com/-/media/Files/downloads/gnu-a/10.2-2020.11/binrel/gcc-arm-10.2-2020.11-x86_64-aarch64-none-elf.tar.xz"; \
     wget -nv "$url"; \
     tar -xf gcc-arm-*.tar.xz; \
     rm gcc-arm-*.tar.xz; \
-    mv gcc-arm-* gcc-aarch64-none-elf;
+    mv gcc-arm-* /opt/gcc-aarch64-none-elf;
 
-ENV PATH=/gcc-aarch64-none-elf/bin:$PATH
-
-RUN mkdir /deps
-
-WORKDIR /deps
+ENV PATH=/opt/gcc-aarch64-none-elf/bin:$PATH
 
 ENV SEL4CP_SDK_VERSION=1.2.6
-
-# branch: rust-sel4cp
-RUN git clone \
-        https://github.com/coliasgroup/seL4.git \
-        --branch keep/fc80c9ad05d33e77a6b850dae8eb4b83 \
-        --config advice.detachedHead=false
 
 # branch: rust-seL4
 RUN git clone \
@@ -60,17 +30,28 @@ RUN git clone \
         --branch keep/54c22948cd0fde4035dde293fbe572ca \
         --config advice.detachedHead=false
 
-RUN cd sel4cp && \
-        python3.9 -m venv pyenv && \
-        ./pyenv/bin/pip install --upgrade pip setuptools wheel && \
-        ./pyenv/bin/pip install -r requirements.txt && \
-        ./pyenv/bin/pip install sel4-deps
+# branch: rust-sel4cp
+RUN git clone \
+        https://github.com/coliasgroup/seL4.git \
+        --branch keep/fc80c9ad05d33e77a6b850dae8eb4b83 \
+        --config advice.detachedHead=false \
+        sel4cp/seL4
 
-RUN cd sel4cp && \
-        ./pyenv/bin/python3 build_sdk.py --sel4 ../seL4 && \
-        chmod a+rwX release/sel4cp-sdk-$SEL4CP_SDK_VERSION/bin/sel4cp
+RUN set -eux; \
+    cd sel4cp; \
+    python3.9 -m venv pyenv; \
+    ./pyenv/bin/pip install --upgrade pip setuptools wheel; \
+    ./pyenv/bin/pip install -r requirements.txt; \
+    ./pyenv/bin/pip install sel4-deps; \
+    ./pyenv/bin/python3 build_sdk.py --sel4 ./seL4; \
+    chmod a+rX release/sel4cp-sdk-$SEL4CP_SDK_VERSION/bin/sel4cp; \
+    mkdir /opt/sel4cp; \
+    mv release/sel4cp-sdk-$SEL4CP_SDK_VERSION /opt/sel4cp; \
+    rm -rf $HOME/.cache/pyoxidizer; \
+    cd ..; \
+    rm -rf sel4cp;
 
-ENV SEL4CP_SDK=/deps/sel4cp/release/sel4cp-sdk-$SEL4CP_SDK_VERSION
+ENV SEL4CP_SDK=/opt/sel4cp/sel4cp-sdk-$SEL4CP_SDK_VERSION
 
 ARG UID
 ARG GID
@@ -79,5 +60,10 @@ RUN groupadd -f -g $GID x && useradd -u $UID -g $GID -G sudo -m -p x x
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers # for convenience
 
 USER x
+
+RUN curl -sSf https://sh.rustup.rs | \
+        bash -s -- -y --no-modify-path --default-toolchain none
+
+ENV PATH=/home/x/.cargo/bin:$PATH
 
 WORKDIR /work
