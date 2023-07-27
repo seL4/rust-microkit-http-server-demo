@@ -1,10 +1,8 @@
 work_root := ..
 
-label := rust-sel4-sel4cp-demo
-image_repository := $(label)
-image_tag := $(image_repository)
-container_name := $(label)
-dockerfile := Dockerfile
+id := rust-sel4-sel4cp-demo
+image_tag := $(id)
+container_name := $(id)
 
 uid := $(shell id -u)
 gid := $(shell id -g)
@@ -16,11 +14,11 @@ none:
 build:
 	docker build \
 		--build-arg UID=$(uid) --build-arg GID=$(gid) \
-		--label $(label) -t $(image_tag) -f $(dockerfile) .
+		-t $(image_tag) .
 
 .PHONY: run
 run: build
-	docker run -d --name $(container_name) --label $(label) \
+	docker run -d --name $(container_name) \
 		--mount type=bind,src=$(abspath $(work_root)),dst=/work \
 		$(image_tag) sleep inf
 
