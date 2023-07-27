@@ -68,11 +68,20 @@ $(loader): $(system_description) $(built_crates)
 		-r $(build_dir)/report.txt \
 		-o $@
 
-.PHONY: run
-run: $(loader)
+### Run
+
+qemu_cmd := \
 	qemu-system-aarch64 \
 		-machine virt \
 		-cpu cortex-a53 -m size=1G \
 		-device loader,file=$(loader),addr=0x70000000,cpu-num=0 \
 		-serial mon:stdio \
 		-nographic
+
+.PHONY: run
+run: $(loader)
+	$(qemu_cmd)
+
+.PHONY: test
+test: test.py $(loader)
+	python3 $< $(qemu_cmd)
