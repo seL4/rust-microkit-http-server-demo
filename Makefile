@@ -18,7 +18,6 @@ rust_sel4cp_target := aarch64-sel4cp-minimal
 target_dir := $(build_dir)/target
 
 common_env := \
-	RUST_TARGET_PATH=$(abspath $(rust_target_path)) \
 	SEL4_INCLUDE_DIRS=$(abspath $(sel4cp_sdk_config_dir)/include)
 
 common_options := \
