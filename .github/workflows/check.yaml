@@ -1,0 +1,12 @@
+name: "Check"
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  check-everything:
+    name: Check everything
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run checks
+        run: make -C docker/ test
