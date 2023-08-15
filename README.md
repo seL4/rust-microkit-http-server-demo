@@ -19,7 +19,7 @@ The Banscii system is comprised of three components:
 
 ### Rustdoc for the `sel4cp` crate
 
-https://coliasgroup.com/rust-seL4-html/views/aarch64-sel4cp/aarch64-sel4cp/doc/sel4cp/index.html
+https://coliasgroup.com/rust-seL4/views/aarch64-sel4cp/aarch64-sel4cp/doc/sel4cp/index.html
 
 ### Quick start
 
