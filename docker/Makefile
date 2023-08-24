@@ -35,6 +35,6 @@ rm-container:
 .PHONY: test
 test: build
 	docker run --rm \
-		--mount type=bind,readonly,src=$(abspath ..),dst=/work \
+		--mount type=bind,readonly,src=$(abspath $(work_root)),dst=/work \
 		-i $(image_tag) \
 		make test BUILD=/tmp/build
