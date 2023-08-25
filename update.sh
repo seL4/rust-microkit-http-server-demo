@@ -3,14 +3,12 @@
 set -eu
 
 external_rust_seL4_dir=../../rust-seL4
-external_demo_dir=$external_rust_seL4_dir/crates/examples/sel4cp/banscii
+external_demo_dir=$external_rust_seL4_dir/crates/examples/sel4cp/http-server
 
 cp $external_rust_seL4_dir/rust-toolchain.toml .
-cp $external_rust_seL4_dir/support/targets/aarch64-sel4cp-minimal.json support/targets
+cp $external_rust_seL4_dir/support/targets/aarch64-sel4cp.json support/targets
 rm -r crates
 cp -r $external_demo_dir crates
-mv crates/pds/* crates/
-rmdir crates/pds
 mv crates/*.system .
 
 subst='s,path = "\(../\)*../../../../\([^"]*\)",git = "https://github.com/coliasgroup/rust-seL4",g' \

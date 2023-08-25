@@ -15,11 +15,16 @@ clean:
 
 ### Protection domains
 
+target_cc := aarch64-none-elf-gcc
+target_bindgen_clang_args := --sysroot=/opt/gcc-aarch64-none-elf-sysroot
+
 rust_target_path := support/targets
-rust_sel4cp_target := aarch64-sel4cp-minimal
+rust_sel4cp_target := aarch64-sel4cp
 target_dir := $(build_dir)/target
 
 common_env := \
+	CC_$(subst -,_,$(rust_sel4cp_target))=$(target_cc) \
+	BINDGEN_EXTRA_CLANG_ARGS_$(subst -,_,$(rust_sel4cp_target))="$(target_bindgen_clang_args)" \
 	SEL4_INCLUDE_DIRS=$(abspath $(sel4cp_sdk_config_dir)/include)
 
 common_options := \
@@ -47,9 +52,10 @@ $(intermediate_target_for_crate):
 endef
 
 crates := \
-	banscii-artist \
-	banscii-assistant \
-	banscii-pl011-driver
+	sel4cp-http-server-example-server \
+	sel4cp-http-server-example-sp804-driver \
+	sel4cp-http-server-example-virtio-net-driver \
+	sel4cp-http-server-example-virtio-blk-driver
 
 built_crates := $(foreach crate,$(crates),$(call target_for_crate,$(crate)))
 
@@ -57,7 +63,7 @@ $(eval $(foreach crate,$(crates),$(call build_crate,$(crate))))
 
 ### Loader
 
-system_description := banscii.system
+system_description := http-server.system
 
 loader := $(build_dir)/loader.img
 
@@ -72,13 +78,19 @@ $(loader): $(system_description) $(built_crates)
 
 ### Run
 
+content_cpio := /tmp/content.cpio
+
 qemu_cmd := \
 	qemu-system-aarch64 \
 		-machine virt \
 		-cpu cortex-a53 -m size=1G \
 		-device loader,file=$(loader),addr=0x70000000,cpu-num=0 \
 		-serial mon:stdio \
-		-nographic
+		-nographic \
+		-device virtio-net-device,netdev=netdev0 \
+		-netdev user,id=netdev0,hostfwd=tcp::8080-:80,hostfwd=tcp::8443-:443 \
+		-device virtio-blk-device,drive=blkdev0 \
+		-blockdev node-name=blkdev0,read-only=on,driver=file,filename=$(content_cpio)
 
 .PHONY: run
 run: $(loader)

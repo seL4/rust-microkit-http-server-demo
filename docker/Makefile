@@ -23,6 +23,8 @@ run: build
 	docker run -d --name $(container_name) \
 		--mount type=bind,src=$(abspath $(work_root)),dst=/work \
 		--mount type=bind,src=$(abspath $(RUST_SEL4)),dst=/rust-seL4 \
+		--publish 9080:8080/tcp \
+		--publish 9443:8443/tcp \
 		$(image_tag) sleep inf
 
 .PHONY: exec
