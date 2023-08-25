@@ -1,4 +1,4 @@
-RUST_SEL4 ?= /var/empty
+RUST_SEL4 ?= /dev/null
 
 work_root := ..
 
