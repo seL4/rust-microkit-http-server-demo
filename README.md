@@ -1,4 +1,4 @@
-# HTTP server
+# HTTP Server
 
 This repository demonstrates the use of the [rust-seL4](https://github.com/coliasgroup/rust-seL4) crates with the [seL4 Core Platform](https://github.com/BreakawayConsulting/sel4cp).
 
@@ -13,8 +13,8 @@ The only requirements for getting started are Git, Make, and Docker.
 First, clone this respository:
 
 ```
-git clone --branch nspin/wip/http-server https://github.com/coliasgroup/rust-seL4-sel4cp-demo.git
-cd rust-seL4-sel4cp-demo
+git clone https://github.com/coliasgroup/rust-seL4-sel4cp-http-server-demo.git
+cd rust-seL4-sel4cp-http-server-demo
 ```
 
 Next, build, run, and enter a Docker container for development:
