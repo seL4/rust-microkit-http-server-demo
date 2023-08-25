@@ -1,12 +1,15 @@
-name: "Check"
+name: "CI"
 on:
+  push:
+    branches:
+      - main
   pull_request:
   workflow_dispatch:
 jobs:
-  check-everything:
-    name: Check everything
+  build-and-check:
+    name: Build and check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Run checks
+      - name: Build and check
         run: make -C docker/ test
