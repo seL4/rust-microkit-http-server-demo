@@ -27,7 +27,7 @@ ENV SEL4CP_SDK_VERSION=1.2.6
 # branch: rust-seL4
 RUN git clone \
         https://github.com/coliasgroup/sel4cp.git \
-        --branch keep/54c22948cd0fde4035dde293fbe572ca \
+        --branch keep/286ebb642150779b8d2ed119b0c43b62 \
         --config advice.detachedHead=false
 
 # branch: rust-sel4cp
