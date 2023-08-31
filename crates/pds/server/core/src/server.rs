@@ -10,6 +10,8 @@ use sel4_async_block_io::BytesIO;
 use sel4_async_block_io_cpiofs as cpiofs;
 use sel4_async_network_mbedtls::mbedtls;
 
+use crate::mime::content_type_from_name;
+
 pub(crate) struct Server<T> {
     index: cpiofs::Index<T>,
 }
@@ -23,25 +25,34 @@ impl<T: BytesIO> Server<T> {
         &self,
         conn: &mut U,
     ) -> Result<(), ClosedError<U::Error>> {
-        let mut buf = vec![0; 1024 * 16];
-        let mut i = 0;
         loop {
-            let n = conn.recv(&mut buf[i..]).await?;
-            assert_ne!(n, 0);
-            i += n;
-            if is_request_complete(&buf[..i]).unwrap_or(false) {
+            let mut buf = vec![0; 1024 * 16];
+            let mut i = 0;
+            loop {
+                let n = conn.recv(&mut buf[i..]).await?;
+                assert_ne!(n, 0);
+                i += n;
+                if is_request_complete(&buf[..i]).unwrap_or(false) {
+                    break;
+                }
+            }
+            let mut headers = [httparse::EMPTY_HEADER; 32];
+            let mut req = httparse::Request::new(&mut headers);
+            let mut keep_alive = false;
+            match req.parse(&buf) {
+                Ok(status) => {
+                    assert!(status.is_complete());
+                    self.handle_request(conn, req.path.unwrap()).await?;
+                    if should_keep_alive(&req) {
+                        keep_alive = true;
+                    }
+                }
+                Err(err) => {
+                    log::warn!("error parsing request: {err:?}");
+                }
+            }
+            if !keep_alive {
                 break;
-            }
-        }
-        let mut headers = [httparse::EMPTY_HEADER; 32];
-        let mut req = httparse::Request::new(&mut headers);
-        match req.parse(&buf) {
-            Ok(status) => {
-                assert!(status.is_complete());
-                self.handle_request(conn, req.path.unwrap()).await?;
-            }
-            Err(err) => {
-                log::warn!("error parsing request: {err:?}");
             }
         }
         Ok(())
@@ -228,30 +239,23 @@ fn is_request_complete(buf: &[u8]) -> Result<bool, httparse::Error> {
     req.parse(buf).map(|status| status.is_complete())
 }
 
-fn content_type_from_name(name: &str) -> &'static str {
-    for (ext, ty) in MIME_ASSOCS {
-        if ext.is_suffix_of(name) {
-            return ty;
+fn should_keep_alive(req: &httparse::Request) -> bool {
+    let version = req.version.unwrap();
+    let default = match version {
+        0 => false,
+        1 => true,
+        _ => panic!(),
+    };
+    for header in req.headers.iter() {
+        if header.name.to_lowercase() == "Connection" {
+            if header.value == b"close" {
+                return false;
+            }
+            if header.value == b"keep-alive" {
+                return true;
+            }
+            panic!();
         }
     }
-    DEFAULT_MIME_TYPE
+    default
 }
-
-const DEFAULT_MIME_TYPE: &str = "application/octet-stream";
-
-const MIME_ASSOCS: &[(&str, &str)] = &[
-    (".css", "text/css"),
-    (".html", "text/html; charset=utf-8"),
-    (".ico", "image/vnd.microsoft.icon"),
-    (".jpg", "image/jpeg"),
-    (".js", "text/javascript; charset=utf-8"),
-    (".mp4", "video/mp4"),
-    (".pdf", "application/pdf"),
-    (".png", "image/png"),
-    (".svg", "image/svg+xml"),
-    (".ttf", "font/ttf"),
-    (".txt", "text/plain; charset=utf-8"),
-    (".woff", "font/woff"),
-    (".woff2", "font/woff2"),
-    (".zip", "application/zip"),
-];
