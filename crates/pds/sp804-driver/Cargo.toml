@@ -9,3 +9,4 @@ license = "BSD-2-Clause"
 sel4cp = { git = "https://github.com/coliasgroup/rust-seL4", default-features = false }
 sel4cp-http-server-example-sp804-driver-core = { path = "./core" }
 sel4cp-http-server-example-sp804-driver-interface-types = { path = "./interface-types" }
+sel4cp-message = { git = "https://github.com/coliasgroup/rust-seL4" }

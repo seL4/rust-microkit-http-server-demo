@@ -17,4 +17,5 @@ sel4-sync = { git = "https://github.com/coliasgroup/rust-seL4" }
 sel4cp = { git = "https://github.com/coliasgroup/rust-seL4", default-features = false }
 sel4cp-http-server-example-virtio-hal-impl = { path = "../../helpers/virtio-hal-impl" }
 sel4cp-http-server-example-virtio-net-driver-interface-types = { path = "./interface-types" }
+sel4cp-message = { git = "https://github.com/coliasgroup/rust-seL4" }
 virtio-drivers = { version = "0.5.0", default-features = false, features = ["alloc"] }

@@ -23,6 +23,7 @@ sel4-shared-ring-buffer-smoltcp = { git = "https://github.com/coliasgroup/rust-s
 sel4-sync = { git = "https://github.com/coliasgroup/rust-seL4" }
 sel4cp = { git = "https://github.com/coliasgroup/rust-seL4", default-features = false, features = ["alloc"] }
 sel4cp-http-server-example-server-core = { path = "./core", features = [] }
+sel4cp-message = { git = "https://github.com/coliasgroup/rust-seL4" }
 
 [dependencies.sel4-async-single-threaded-executor]
 git = "https://github.com/coliasgroup/rust-seL4"
