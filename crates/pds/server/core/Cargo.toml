@@ -1,5 +1,5 @@
 [package]
-name = "sel4cp-http-server-example-server-core"
+name = "microkit-http-server-example-server-core"
 version = "0.1.0"
 authors = ["Nick Spinale <nick.spinale@coliasgroup.com>"]
 edition = "2021"
@@ -12,12 +12,12 @@ debug = ["mbedtls/debug"]
 futures = { version = "0.3.28", default-features = false, features = ["async-await", "alloc"] }
 httparse = { version = "1.8.0", default-features = false }
 log = "0.4.17"
-sel4-async-block-io = { git = "https://github.com/coliasgroup/rust-seL4" }
-sel4-async-block-io-cpiofs = { git = "https://github.com/coliasgroup/rust-seL4" }
-sel4-async-network = { git = "https://github.com/coliasgroup/rust-seL4" }
-sel4-async-network-mbedtls = { git = "https://github.com/coliasgroup/rust-seL4" }
-sel4-async-timers = { git = "https://github.com/coliasgroup/rust-seL4" }
-sel4-panicking-env = { git = "https://github.com/coliasgroup/rust-seL4" }
+sel4-async-block-io = { git = "https://github.com/coliasgroup/rust-sel4" }
+sel4-async-block-io-cpiofs = { git = "https://github.com/coliasgroup/rust-sel4" }
+sel4-async-network = { git = "https://github.com/coliasgroup/rust-sel4" }
+sel4-async-network-mbedtls = { git = "https://github.com/coliasgroup/rust-sel4" }
+sel4-async-timers = { git = "https://github.com/coliasgroup/rust-sel4" }
+sel4-panicking-env = { git = "https://github.com/coliasgroup/rust-sel4" }
 
 [dependencies.mbedtls]
 git = "https://github.com/nspin/rust-mbedtls"
@@ -26,4 +26,4 @@ default-features = false
 features = ["no_std_deps"]
 
 [dependencies.sel4-async-single-threaded-executor]
-git = "https://github.com/coliasgroup/rust-seL4"
+git = "https://github.com/coliasgroup/rust-sel4"

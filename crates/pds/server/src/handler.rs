@@ -20,9 +20,9 @@ type BytesIOImpl = BytesIOAdapter<CachedBlockIO<BlockIO, BLOCK_SIZE>, BLOCK_SIZE
 const BLOCK_CACHE_SIZE_IN_BLOCKS: usize = 128;
 
 pub(crate) struct HandlerImpl {
-    timer_driver_channel: sel4cp::Channel,
-    net_driver_channel: sel4cp::Channel,
-    block_driver_channel: sel4cp::Channel,
+    timer_driver_channel: sel4_microkit::Channel,
+    net_driver_channel: sel4_microkit::Channel,
+    block_driver_channel: sel4_microkit::Channel,
     timer: TimerClient,
     net_device: DeviceImpl,
     fs_block_io: BlockIO,
@@ -35,9 +35,9 @@ pub(crate) struct HandlerImpl {
 impl HandlerImpl {
     #[allow(clippy::too_many_arguments)]
     pub(crate) fn new<T: Future<Output = !> + 'static>(
-        timer_driver_channel: sel4cp::Channel,
-        net_driver_channel: sel4cp::Channel,
-        block_driver_channel: sel4cp::Channel,
+        timer_driver_channel: sel4_microkit::Channel,
+        net_driver_channel: sel4_microkit::Channel,
+        block_driver_channel: sel4_microkit::Channel,
         timer: TimerClient,
         mut net_device: DeviceImpl,
         net_config: Config,
@@ -132,10 +132,10 @@ impl HandlerImpl {
     }
 }
 
-impl sel4cp::Handler for HandlerImpl {
+impl sel4_microkit::Handler for HandlerImpl {
     type Error = !;
 
-    fn notified(&mut self, channel: sel4cp::Channel) -> Result<(), Self::Error> {
+    fn notified(&mut self, channel: sel4_microkit::Channel) -> Result<(), Self::Error> {
         self.react(
             channel == self.timer_driver_channel,
             channel == self.net_driver_channel,

@@ -2,9 +2,9 @@ BUILD ?= build
 
 build_dir := $(BUILD)
 
-sel4cp_board := qemu_arm_virt
-sel4cp_config := debug
-sel4cp_sdk_config_dir := $(SEL4CP_SDK)/board/$(sel4cp_board)/$(sel4cp_config)
+microkit_board := qemu_arm_virt
+microkit_config := debug
+microkit_sdk_config_dir := $(MICROKIT_SDK)/board/$(microkit_board)/$(microkit_config)
 
 .PHONY: none
 none:
@@ -19,18 +19,18 @@ target_cc := aarch64-none-elf-gcc
 target_bindgen_clang_args := --sysroot=/opt/gcc-aarch64-none-elf-sysroot
 
 rust_target_path := support/targets
-rust_sel4cp_target := aarch64-sel4cp
+rust_microkit_target := aarch64-sel4-microkit
 target_dir := $(build_dir)/target
 
 common_env := \
-	CC_$(subst -,_,$(rust_sel4cp_target))=$(target_cc) \
-	BINDGEN_EXTRA_CLANG_ARGS_$(subst -,_,$(rust_sel4cp_target))="$(target_bindgen_clang_args)" \
-	SEL4_INCLUDE_DIRS=$(abspath $(sel4cp_sdk_config_dir)/include)
+	CC_$(subst -,_,$(rust_microkit_target))=$(target_cc) \
+	BINDGEN_EXTRA_CLANG_ARGS_$(subst -,_,$(rust_microkit_target))="$(target_bindgen_clang_args)" \
+	SEL4_INCLUDE_DIRS=$(abspath $(microkit_sdk_config_dir)/include)
 
 common_options := \
 	-Z build-std=core,alloc,compiler_builtins \
 	-Z build-std-features=compiler-builtins-mem \
-	--target $(rust_sel4cp_target) \
+	--target $(rust_microkit_target) \
 	--release \
 	--target-dir $(abspath $(target_dir)) \
 	--out-dir $(abspath $(build_dir))
@@ -52,10 +52,10 @@ $(intermediate_target_for_crate):
 endef
 
 crates := \
-	sel4cp-http-server-example-server \
-	sel4cp-http-server-example-sp804-driver \
-	sel4cp-http-server-example-virtio-net-driver \
-	sel4cp-http-server-example-virtio-blk-driver
+	microkit-http-server-example-server \
+	microkit-http-server-example-sp804-driver \
+	microkit-http-server-example-virtio-net-driver \
+	microkit-http-server-example-virtio-blk-driver
 
 built_crates := $(foreach crate,$(crates),$(call target_for_crate,$(crate)))
 
@@ -68,11 +68,11 @@ system_description := http-server.system
 loader := $(build_dir)/loader.img
 
 $(loader): $(system_description) $(built_crates)
-	$(SEL4CP_SDK)/bin/sel4cp \
+	$(MICROKIT_SDK)/bin/microkit \
 		$< \
 		--search-path $(build_dir) \
-		--board $(sel4cp_board) \
-		--config $(sel4cp_config) \
+		--board $(microkit_board) \
+		--config $(microkit_config) \
 		-r $(build_dir)/report.txt \
 		-o $@
 

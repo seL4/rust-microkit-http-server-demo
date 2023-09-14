@@ -11,7 +11,7 @@ RUN apt-get update -q && apt-get install -y --no-install-recommends \
     libaio-dev \
     libpixman-1-dev \
     libslirp-dev \
-    # for sel4cp
+    # for microkit
     python3-venv \
     musl-tools \
     pandoc \
@@ -57,36 +57,36 @@ RUN set -eux; \
 
 ENV PATH=/opt/qemu/bin:$PATH
 
-ENV SEL4CP_SDK_VERSION=1.2.6
+ENV MICROKIT_SDK_VERSION=1.2.6
 
-# branch: rust-seL4
+# branch: rust
 RUN git clone \
-        https://github.com/coliasgroup/sel4cp.git \
-        --branch keep/286ebb642150779b8d2ed119b0c43b62 \
+        https://github.com/coliasgroup/microkit.git \
+        --branch keep/be3c2149f68b17206d9e03e8b038553c \
         --config advice.detachedHead=false
 
-# branch: rust-sel4cp
+# branch: rust-microkit
 RUN git clone \
         https://github.com/coliasgroup/seL4.git \
         --branch keep/fc80c9ad05d33e77a6b850dae8eb4b83 \
         --config advice.detachedHead=false \
-        sel4cp/seL4
+        microkit/seL4
 
 RUN set -eux; \
-    cd sel4cp; \
+    cd microkit; \
     python3.9 -m venv pyenv; \
     ./pyenv/bin/pip install --upgrade pip setuptools wheel; \
     ./pyenv/bin/pip install -r requirements.txt; \
     ./pyenv/bin/pip install sel4-deps; \
     ./pyenv/bin/python3 build_sdk.py --sel4 ./seL4; \
-    chmod a+rX release/sel4cp-sdk-$SEL4CP_SDK_VERSION/bin/sel4cp; \
-    mkdir /opt/sel4cp; \
-    mv release/sel4cp-sdk-$SEL4CP_SDK_VERSION /opt/sel4cp; \
+    chmod a+rX release/microkit-sdk-$MICROKIT_SDK_VERSION/bin/microkit; \
+    mkdir /opt/microkit; \
+    mv release/microkit-sdk-$MICROKIT_SDK_VERSION /opt/microkit; \
     rm -rf $HOME/.cache/pyoxidizer; \
     cd ..; \
-    rm -rf sel4cp;
+    rm -rf microkit;
 
-ENV SEL4CP_SDK=/opt/sel4cp/sel4cp-sdk-$SEL4CP_SDK_VERSION
+ENV MICROKIT_SDK=/opt/microkit/microkit-sdk-$MICROKIT_SDK_VERSION
 
 RUN git clone \
         https://github.com/seL4/website_pr_hosting \

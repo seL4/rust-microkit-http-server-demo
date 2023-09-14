@@ -1,14 +1,14 @@
-use sel4cp::MessageInfo;
-use sel4cp_message::MessageInfoExt as _;
+use sel4_microkit::MessageInfo;
+use sel4_microkit_message::MessageInfoExt as _;
 
-use sel4cp_http_server_example_sp804_driver_interface_types::*;
+use microkit_http_server_example_sp804_driver_interface_types::*;
 
 pub struct TimerClient {
-    channel: sel4cp::Channel,
+    channel: sel4_microkit::Channel,
 }
 
 impl TimerClient {
-    pub fn new(channel: sel4cp::Channel) -> Self {
+    pub fn new(channel: sel4_microkit::Channel) -> Self {
         Self { channel }
     }
 

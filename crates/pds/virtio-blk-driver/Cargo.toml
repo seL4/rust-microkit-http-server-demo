@@ -1,5 +1,5 @@
 [package]
-name = "sel4cp-http-server-example-virtio-blk-driver"
+name = "microkit-http-server-example-virtio-blk-driver"
 version = "0.1.0"
 authors = ["Nick Spinale <nick.spinale@coliasgroup.com>"]
 edition = "2021"
@@ -7,16 +7,16 @@ license = "BSD-2-Clause"
 
 [dependencies]
 log = "0.4.17"
-sel4 = { git = "https://github.com/coliasgroup/rust-seL4" }
-sel4-bounce-buffer-allocator = { git = "https://github.com/coliasgroup/rust-seL4" }
-sel4-externally-shared = { git = "https://github.com/coliasgroup/rust-seL4", features = ["unstable"] }
-sel4-immediate-sync-once-cell = { git = "https://github.com/coliasgroup/rust-seL4" }
-sel4-logging = { git = "https://github.com/coliasgroup/rust-seL4" }
-sel4-shared-ring-buffer = { git = "https://github.com/coliasgroup/rust-seL4" }
-sel4-sync = { git = "https://github.com/coliasgroup/rust-seL4" }
-sel4cp = { git = "https://github.com/coliasgroup/rust-seL4", default-features = false }
-sel4cp-http-server-example-virtio-hal-impl = { path = "../../helpers/virtio-hal-impl" }
+microkit-http-server-example-virtio-hal-impl = { path = "../../helpers/virtio-hal-impl" }
+sel4 = { git = "https://github.com/coliasgroup/rust-sel4" }
+sel4-bounce-buffer-allocator = { git = "https://github.com/coliasgroup/rust-sel4" }
+sel4-externally-shared = { git = "https://github.com/coliasgroup/rust-sel4", features = ["unstable"] }
+sel4-immediate-sync-once-cell = { git = "https://github.com/coliasgroup/rust-sel4" }
+sel4-logging = { git = "https://github.com/coliasgroup/rust-sel4" }
+sel4-microkit = { git = "https://github.com/coliasgroup/rust-sel4", default-features = false }
+sel4-shared-ring-buffer = { git = "https://github.com/coliasgroup/rust-sel4" }
+sel4-sync = { git = "https://github.com/coliasgroup/rust-sel4" }
 virtio-drivers = { version = "0.5.0", default-features = false }
 
 [dependencies.sel4-shared-ring-buffer-block-io-types]
-git = "https://github.com/coliasgroup/rust-seL4"
+git = "https://github.com/coliasgroup/rust-sel4"
