@@ -10,19 +10,19 @@ async-unsync = { version = "0.2.2", default-features = false }
 futures = { version = "0.3.28", default-features = false, features = ["async-await", "alloc"] }
 log = "0.4.17"
 microkit-http-server-example-server-core = { path = "./core", features = [] }
-sel4 = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-async-block-io = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-async-network = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-async-request-statuses = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-async-timers = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-bounce-buffer-allocator = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-immediate-sync-once-cell = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-logging = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-microkit-message = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-shared-ring-buffer = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-shared-ring-buffer-block-io = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-shared-ring-buffer-smoltcp = { git = "https://github.com/coliasgroup/rust-sel4" }
-sel4-sync = { git = "https://github.com/coliasgroup/rust-sel4" }
+sel4 = { git = "https://github.com/seL4/rust-sel4" }
+sel4-async-block-io = { git = "https://github.com/seL4/rust-sel4" }
+sel4-async-network = { git = "https://github.com/seL4/rust-sel4" }
+sel4-async-request-statuses = { git = "https://github.com/seL4/rust-sel4" }
+sel4-async-timers = { git = "https://github.com/seL4/rust-sel4" }
+sel4-bounce-buffer-allocator = { git = "https://github.com/seL4/rust-sel4" }
+sel4-immediate-sync-once-cell = { git = "https://github.com/seL4/rust-sel4" }
+sel4-logging = { git = "https://github.com/seL4/rust-sel4" }
+sel4-microkit-message = { git = "https://github.com/seL4/rust-sel4" }
+sel4-shared-ring-buffer = { git = "https://github.com/seL4/rust-sel4" }
+sel4-shared-ring-buffer-block-io = { git = "https://github.com/seL4/rust-sel4" }
+sel4-shared-ring-buffer-smoltcp = { git = "https://github.com/seL4/rust-sel4" }
+sel4-sync = { git = "https://github.com/seL4/rust-sel4" }
 
 [dependencies.microkit-http-server-example-sp804-driver-interface-types]
 path = "../sp804-driver/interface-types"
@@ -31,23 +31,23 @@ path = "../sp804-driver/interface-types"
 path = "../virtio-net-driver/interface-types"
 
 [dependencies.sel4-async-single-threaded-executor]
-git = "https://github.com/coliasgroup/rust-sel4"
+git = "https://github.com/seL4/rust-sel4"
 
 [dependencies.sel4-externally-shared]
-git = "https://github.com/coliasgroup/rust-sel4"
+git = "https://github.com/seL4/rust-sel4"
 features = ["unstable", "alloc"]
 
 [dependencies.sel4-microkit]
-git = "https://github.com/coliasgroup/rust-sel4"
+git = "https://github.com/seL4/rust-sel4"
 default-features = false
 features = ["alloc"]
 
 [dependencies.sel4-newlib]
-git = "https://github.com/coliasgroup/rust-sel4"
+git = "https://github.com/seL4/rust-sel4"
 features = ["nosys", "all-symbols", "sel4-panicking-env"]
 
 [dependencies.sel4-shared-ring-buffer-block-io-types]
-git = "https://github.com/coliasgroup/rust-sel4"
+git = "https://github.com/seL4/rust-sel4"
 
 [dependencies.smoltcp]
 version = "0.10.0"
