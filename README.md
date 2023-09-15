@@ -1,6 +1,7 @@
 # HTTP Server
 
-This repository demonstrates the use of the [seL4 crates](https://github.com/coliasgroup/rust-sel4) with the [seL4 Microkit](https://github.com/seL4/microkit).
+This repository demonstrates the use of the [seL4 crates](https://github.com/seL4/rust-sel4) with
+the [seL4 Microkit](https://github.com/seL4/microkit).
 
 ### Rustdoc for the `sel4-microkit` crate
 
@@ -13,7 +14,7 @@ The only requirements for getting started are Git, Make, and Docker.
 First, clone this respository:
 
 ```
-git clone https://github.com/coliasgroup/rust-microkit-http-server-demo.git
+git clone https://github.com/seL4/rust-microkit-http-server-demo.git
 cd rust-microkit-http-server-demo
 ```
 
