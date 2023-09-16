@@ -5,7 +5,7 @@ the [seL4 Microkit](https://github.com/seL4/microkit).
 
 ### Rustdoc for the `sel4-microkit` crate
 
-https://coliasgroup.com/rust-sel4/views/aarch64-microkit/aarch64-sel4-microkit/doc/sel4_microkit/index.html
+https://sel4.github.io/rust-sel4/views/aarch64-microkit/aarch64-sel4-microkit/doc/sel4_microkit/index.html
 
 ### Quick start
 
