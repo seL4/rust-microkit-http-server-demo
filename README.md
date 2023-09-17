@@ -1,7 +1,11 @@
 # HTTP Server
 
 This repository demonstrates the use of the [seL4 crates](https://github.com/seL4/rust-sel4) with
-the [seL4 Microkit](https://github.com/seL4/microkit).
+the [seL4 Microkit](https://github.com/seL4/microkit). It serves a static site
+(the same content as [https://sel4.systems](https://sel4.systems)) over HTTP and HTTPS. Currently, `qemu-arm-virt` is the only
+supported platform.
+
+![system](./docs/images/system.drawio.png)
 
 ### Rustdoc for the `sel4-microkit` crate
 
