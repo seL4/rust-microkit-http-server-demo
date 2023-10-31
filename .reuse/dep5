@@ -1,0 +1,21 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: seL4
+Upstream-Contact: seL4 team <support@sel4.systems>
+Source: http://sel4.systems
+
+Files:
+  Cargo.lock
+  support/*.json
+Copyright: 2023, Colias Group, LLC
+License: BSD-2-Clause
+
+Files:
+  docs/images/system.drawio
+  docs/images/system.drawio.png
+Copyright: 2023, Colias Group, LLC
+License: CC-BY-SA-4.0
+
+Files:
+  resources/disk.img.gz
+Copyright: 2020 seL4 Project a Series of LF Projects, LLC.
+License: CC-BY-SA-4.0
