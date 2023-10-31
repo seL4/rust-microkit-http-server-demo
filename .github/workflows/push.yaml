@@ -12,6 +12,11 @@ on:
   pull_request:
   workflow_dispatch:
 jobs:
+  check-licenses:
+    name: Check licenses
+    runs-on: ubuntu-latest
+    steps:
+      - uses: seL4/ci-actions/license-check@master
   build-and-check:
     name: Build and check
     runs-on: ubuntu-latest
