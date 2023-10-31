@@ -1,3 +1,9 @@
+#
+# Copyright 2023, Colias Group, LLC
+#
+# SPDX-License-Identifier: BSD-2-Clause
+#
+
 # This repo's code mirrors that of a demo found in the rust-sel4 repo.
 
 set -eu
