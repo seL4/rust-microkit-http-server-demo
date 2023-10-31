@@ -68,7 +68,7 @@ ENV MICROKIT_SDK_VERSION=1.2.6
 # branch: rust
 RUN git clone \
         https://github.com/coliasgroup/microkit.git \
-        --branch keep/acab5b66cb8d66754deb18736fc82a4b \
+        --branch keep/004e340a38d1ed7bf9d1a0223aff8475 \
         --config advice.detachedHead=false
 
 # branch: rust-microkit
