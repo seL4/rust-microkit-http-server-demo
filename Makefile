@@ -78,7 +78,11 @@ $(loader): $(system_description) $(built_crates)
 
 ### Run
 
-content_cpio := /tmp/content.cpio
+compressed_disk_img := resources/disk.img.gz
+disk_img := $(build_dir)/disk.img
+
+$(disk_img): $(compressed_disk_img)
+	gunzip < $< > $@
 
 qemu_cmd := \
 	qemu-system-aarch64 \
@@ -90,12 +94,14 @@ qemu_cmd := \
 		-device virtio-net-device,netdev=netdev0 \
 		-netdev user,id=netdev0,hostfwd=tcp::8080-:80,hostfwd=tcp::8443-:443 \
 		-device virtio-blk-device,drive=blkdev0 \
-		-blockdev node-name=blkdev0,read-only=on,driver=file,filename=$(content_cpio)
+		-blockdev node-name=blkdev0,read-only=on,driver=file,filename=$(disk_img)
+
+qemu_cmd_prereqs := $(loader) $(disk_img)
 
 .PHONY: run
-run: $(loader)
+run: $(qemu_cmd_prereqs)
 	$(qemu_cmd)
 
 .PHONY: test
-test: test.py $(loader)
+test: test.py $(qemu_cmd_prereqs)
 	python3 $< $(qemu_cmd)

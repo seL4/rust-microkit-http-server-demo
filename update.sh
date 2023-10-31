@@ -18,3 +18,10 @@ subst='s,path = "\(../\)*../../../../\([^"]*\)",git = "https://github.com/seL4/r
 find crates -name Cargo.toml -exec sed -i "$subst" {} +
 
 cargo update -w -p sel4-microkit
+
+disk_img_dst=resources/disk.img.gz
+if [ ! -e $disk_img_dst ]; then
+    attr_path=worlds.aarch64.qemu-arm-virt.microkit.instances.microkit.examples.http-server.smallDiskImage
+    out_path=$(nix-build $external_rust_seL4_dir -A $attr_path --no-out-link)
+    gzip < $out_path/disk.img > $disk_img_dst
+fi

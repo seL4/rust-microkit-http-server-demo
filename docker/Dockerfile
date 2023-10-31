@@ -88,16 +88,6 @@ RUN set -eux; \
 
 ENV MICROKIT_SDK=/opt/microkit/microkit-sdk-$MICROKIT_SDK_VERSION
 
-RUN git clone \
-        https://github.com/seL4/website_pr_hosting \
-        --branch PR_280 \
-        --config advice.detachedHead=false \
-        content
-
-RUN set -eux; \
-    (cd content/localhost && find . -print -depth | cpio -o -H newc) > content.cpio; \
-    rm -rf content
-
 ARG UID
 ARG GID
 
