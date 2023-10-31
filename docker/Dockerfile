@@ -62,13 +62,13 @@ ENV MICROKIT_SDK_VERSION=1.2.6
 # branch: rust
 RUN git clone \
         https://github.com/coliasgroup/microkit.git \
-        --branch keep/be3c2149f68b17206d9e03e8b038553c \
+        --branch keep/acab5b66cb8d66754deb18736fc82a4b \
         --config advice.detachedHead=false
 
 # branch: rust-microkit
 RUN git clone \
         https://github.com/coliasgroup/seL4.git \
-        --branch keep/fc80c9ad05d33e77a6b850dae8eb4b83 \
+        --branch keep/7b8c552b36fe13b8a846b06a659c2369 \
         --config advice.detachedHead=false \
         microkit/seL4
 
