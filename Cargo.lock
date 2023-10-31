@@ -1138,7 +1138,7 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 [[package]]
 name = "sel4"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "cfg-if",
  "sel4-config",
@@ -1148,7 +1148,7 @@ dependencies = [
 [[package]]
 name = "sel4-async-block-io"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "bytemuck",
  "futures",
@@ -1161,7 +1161,7 @@ dependencies = [
 [[package]]
 name = "sel4-async-block-io-fat"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "embedded-fat",
  "futures",
@@ -1175,7 +1175,7 @@ dependencies = [
 [[package]]
 name = "sel4-async-network"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "futures",
  "log",
@@ -1185,7 +1185,7 @@ dependencies = [
 [[package]]
 name = "sel4-async-network-mbedtls"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "futures",
  "log",
@@ -1198,12 +1198,12 @@ dependencies = [
 [[package]]
 name = "sel4-async-network-mbedtls-mozilla-ca-list"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 
 [[package]]
 name = "sel4-async-single-threaded-executor"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "futures",
 ]
@@ -1211,7 +1211,7 @@ dependencies = [
 [[package]]
 name = "sel4-async-time"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "log",
  "pin-project",
@@ -1220,7 +1220,7 @@ dependencies = [
 [[package]]
 name = "sel4-async-unsync"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "async-unsync",
 ]
@@ -1228,12 +1228,12 @@ dependencies = [
 [[package]]
 name = "sel4-bitfield-ops"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 
 [[package]]
 name = "sel4-bitfield-parser"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "pest",
  "pest_derive",
@@ -1243,7 +1243,7 @@ dependencies = [
 [[package]]
 name = "sel4-bounce-buffer-allocator"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "log",
 ]
@@ -1251,12 +1251,12 @@ dependencies = [
 [[package]]
 name = "sel4-build-env"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 
 [[package]]
 name = "sel4-config"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "sel4-config-macros",
 ]
@@ -1264,7 +1264,7 @@ dependencies = [
 [[package]]
 name = "sel4-config-data"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "lazy_static",
  "sel4-build-env",
@@ -1275,7 +1275,7 @@ dependencies = [
 [[package]]
 name = "sel4-config-generic-macro-impls"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "fallible-iterator",
  "proc-macro2",
@@ -1287,7 +1287,7 @@ dependencies = [
 [[package]]
 name = "sel4-config-generic-types"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "serde",
 ]
@@ -1295,7 +1295,7 @@ dependencies = [
 [[package]]
 name = "sel4-config-macros"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "sel4-config-data",
  "sel4-config-generic-macro-impls",
@@ -1304,7 +1304,7 @@ dependencies = [
 [[package]]
 name = "sel4-dlmalloc"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "dlmalloc",
  "sel4-sync",
@@ -1313,7 +1313,7 @@ dependencies = [
 [[package]]
 name = "sel4-externally-shared"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "volatile",
  "zerocopy 0.7.20",
@@ -1322,17 +1322,17 @@ dependencies = [
 [[package]]
 name = "sel4-immediate-sync-once-cell"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 
 [[package]]
 name = "sel4-immutable-cell"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 
 [[package]]
 name = "sel4-initialize-tls-on-stack"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "cfg-if",
  "sel4",
@@ -1341,7 +1341,7 @@ dependencies = [
 [[package]]
 name = "sel4-logging"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "log",
 ]
@@ -1349,7 +1349,7 @@ dependencies = [
 [[package]]
 name = "sel4-microkit"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "cfg-if",
  "sel4",
@@ -1365,7 +1365,7 @@ dependencies = [
 [[package]]
 name = "sel4-microkit-macros"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1375,7 +1375,7 @@ dependencies = [
 [[package]]
 name = "sel4-microkit-message"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "sel4-microkit",
  "sel4-microkit-message-types",
@@ -1385,7 +1385,7 @@ dependencies = [
 [[package]]
 name = "sel4-microkit-message-types"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "num_enum",
  "postcard",
@@ -1396,7 +1396,7 @@ dependencies = [
 [[package]]
 name = "sel4-newlib"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "cc",
  "log",
@@ -1407,7 +1407,7 @@ dependencies = [
 [[package]]
 name = "sel4-panicking"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "cfg-if",
  "sel4-immediate-sync-once-cell",
@@ -1418,12 +1418,12 @@ dependencies = [
 [[package]]
 name = "sel4-panicking-env"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 
 [[package]]
 name = "sel4-runtime-common"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "cfg-if",
  "sel4-dlmalloc",
@@ -1435,7 +1435,7 @@ dependencies = [
 [[package]]
 name = "sel4-rustfmt-helper"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "which",
 ]
@@ -1443,7 +1443,7 @@ dependencies = [
 [[package]]
 name = "sel4-shared-ring-buffer"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "log",
  "sel4-externally-shared",
@@ -1453,7 +1453,7 @@ dependencies = [
 [[package]]
 name = "sel4-shared-ring-buffer-block-io"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "async-unsync",
  "futures",
@@ -1469,7 +1469,7 @@ dependencies = [
 [[package]]
 name = "sel4-shared-ring-buffer-block-io-types"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "num_enum",
  "sel4-shared-ring-buffer",
@@ -1479,7 +1479,7 @@ dependencies = [
 [[package]]
 name = "sel4-shared-ring-buffer-bookkeeping"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "async-unsync",
 ]
@@ -1487,7 +1487,7 @@ dependencies = [
 [[package]]
 name = "sel4-shared-ring-buffer-smoltcp"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "log",
  "sel4-bounce-buffer-allocator",
@@ -1500,7 +1500,7 @@ dependencies = [
 [[package]]
 name = "sel4-sync"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "sel4",
  "sel4-immediate-sync-once-cell",
@@ -1509,7 +1509,7 @@ dependencies = [
 [[package]]
 name = "sel4-sys"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#c55256d1f66ad00681da511fdd42789fe6298165"
+source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
 dependencies = [
  "bindgen 0.68.1",
  "glob",
