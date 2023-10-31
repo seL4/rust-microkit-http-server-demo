@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!--
+     Copyright 2023, Colias Group, LLC
+
+     SPDX-License-Identifier: BSD-2-Clause
+-->
 <system>
     <memory_region name="sp804_mmio" size="0x1000" phys_addr="0x90d0000" />
 
@@ -23,7 +28,6 @@
 
         <map mr="virtio_net_client_dma" vaddr="0x1_000_000_000" perms="rw" cached="true" setvar_vaddr="virtio_net_client_dma_vaddr" />
         <setvar symbol="virtio_net_client_dma_size" vaddr="0x200_000" />
-        <setvar symbol="virtio_net_client_dma_paddr" region_paddr="virtio_net_client_dma" />
 
         <map mr="virtio_net_rx_free" vaddr="0x2_000_000_000" perms="rw" cached="true" setvar_vaddr="virtio_net_rx_free" />
         <map mr="virtio_net_rx_used" vaddr="0x2_001_000_000" perms="rw" cached="true" setvar_vaddr="virtio_net_rx_used" />
@@ -32,20 +36,19 @@
 
         <map mr="virtio_blk_client_dma" vaddr="0x3_000_000_000" perms="rw" cached="true" setvar_vaddr="virtio_blk_client_dma_vaddr" />
         <setvar symbol="virtio_blk_client_dma_size" vaddr="0x200_000" />
-        <setvar symbol="virtio_blk_client_dma_paddr" region_paddr="virtio_blk_client_dma" />
 
         <map mr="virtio_blk_free" vaddr="0x4_000_000_000" perms="rw" cached="true" setvar_vaddr="virtio_blk_free" />
         <map mr="virtio_blk_used" vaddr="0x4_001_000_000" perms="rw" cached="true" setvar_vaddr="virtio_blk_used" />
     </protection_domain>
 
-    <protection_domain name="sp804_driver" priority="254" pp="true">
+    <protection_domain name="sp804_driver" pp="true" priority="254">
         <program_image path="microkit-http-server-example-sp804-driver.elf" />
         <map mr="sp804_mmio"  vaddr="0x5_000_000_000" perms="rw" cached="false" setvar_vaddr="sp804_mmio_vaddr" />
         <irq irq="43" id="0" />
         <setvar symbol="freq" vaddr="1_000_000" />
     </protection_domain>
 
-    <protection_domain name="virtio_net_driver" priority="253" pp="true">
+    <protection_domain name="virtio_net_driver" pp="true" priority="253">
         <program_image path="microkit-http-server-example-virtio-net-driver.elf" />
 
         <map mr="virtio_mmio" vaddr="0x6_000_000_000" perms="rw" cached="false" setvar_vaddr="virtio_net_mmio_vaddr" />
@@ -57,7 +60,6 @@
 
         <map mr="virtio_net_client_dma" vaddr="0x1_000_000_000" perms="rw" cached="true" setvar_vaddr="virtio_net_client_dma_vaddr" />
         <setvar symbol="virtio_net_client_dma_size" vaddr="0x200_000" />
-        <setvar symbol="virtio_net_client_dma_paddr" region_paddr="virtio_net_client_dma" />
 
         <map mr="virtio_net_rx_free" vaddr="0x2_000_000_000" perms="rw" cached="true" setvar_vaddr="virtio_net_rx_free" />
         <map mr="virtio_net_rx_used" vaddr="0x2_001_000_000" perms="rw" cached="true" setvar_vaddr="virtio_net_rx_used" />
@@ -67,7 +69,7 @@
         <irq irq="79" id="0" />
     </protection_domain>
 
-    <protection_domain name="virtio_blk_driver" priority="252">
+    <protection_domain name="virtio_blk_driver" pp="true" priority="252">
         <program_image path="microkit-http-server-example-virtio-blk-driver.elf" />
 
         <map mr="virtio_mmio" vaddr="0x6_000_000_000" perms="rw" cached="false" setvar_vaddr="virtio_blk_mmio_vaddr" />
@@ -79,7 +81,6 @@
 
         <map mr="virtio_blk_client_dma" vaddr="0x3_000_000_000" perms="rw" cached="true" setvar_vaddr="virtio_blk_client_dma_vaddr" />
         <setvar symbol="virtio_blk_client_dma_size" vaddr="0x200_000" />
-        <setvar symbol="virtio_blk_client_dma_paddr" region_paddr="virtio_blk_client_dma" />
 
         <map mr="virtio_blk_free" vaddr="0x4_000_000_000" perms="rw" cached="true" setvar_vaddr="virtio_blk_free" />
         <map mr="virtio_blk_used" vaddr="0x4_001_000_000" perms="rw" cached="true" setvar_vaddr="virtio_blk_used" />

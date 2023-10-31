@@ -1,3 +1,9 @@
+//
+// Copyright 2023, Colias Group, LLC
+//
+// SPDX-License-Identifier: BSD-2-Clause
+//
+
 #![no_std]
 #![feature(ptr_metadata)]
 #![feature(slice_ptr_get)]
@@ -9,7 +15,7 @@ use core::ptr::{self, NonNull};
 use virtio_drivers::{BufferDirection, Hal, PhysAddr, PAGE_SIZE};
 
 use sel4_bounce_buffer_allocator::{Basic, BounceBufferAllocator};
-use sel4_externally_shared::ExternallySharedRef;
+use sel4_externally_shared::{ExternallySharedRef, ExternallySharedRefExt};
 use sel4_immediate_sync_once_cell::ImmediateSyncOnceCell;
 use sel4_sync::{GenericMutex, PanickingMutexSyncOps};
 

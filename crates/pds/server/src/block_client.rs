@@ -7,24 +7,24 @@
 use sel4_microkit::MessageInfo;
 use sel4_microkit_message::MessageInfoExt as _;
 
-use microkit_http_server_example_virtio_net_driver_interface_types::*;
+use microkit_http_server_example_virtio_blk_driver_interface_types::*;
 
-pub struct NetClient {
+pub struct BlockClient {
     channel: sel4_microkit::Channel,
 }
 
-impl NetClient {
+impl BlockClient {
     pub fn new(channel: sel4_microkit::Channel) -> Self {
         Self { channel }
     }
 
-    pub fn get_mac_address(&self) -> MacAddress {
-        let req = Request::GetMacAddress;
-        let resp: GetMacAddressResponse = self
+    pub fn get_num_blocks(&self) -> u64 {
+        let req = Request::GetNumBlocks;
+        let resp: GetNumBlocksResponse = self
             .channel
             .pp_call(MessageInfo::send_using_postcard(req).unwrap())
             .recv_using_postcard()
             .unwrap();
-        resp.mac_address
+        resp.num_blocks
     }
 }

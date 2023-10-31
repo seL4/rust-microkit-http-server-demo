@@ -1,3 +1,14 @@
+#
+# Copyright 2023, Colias Group, LLC
+#
+# SPDX-License-Identifier: BSD-2-Clause
+#
+#
+# This file is generated from './Cargo.nix'. You can edit this file directly
+# if you are not using this project's Cargo manifest management tools.
+# See 'hacking/cargo-manifest-management/README.md' for more information.
+#
+
 [package]
 name = "microkit-http-server-example-virtio-blk-driver"
 version = "0.1.0"
@@ -7,6 +18,7 @@ license = "BSD-2-Clause"
 
 [dependencies]
 log = "0.4.17"
+microkit-http-server-example-virtio-blk-driver-interface-types = { path = "interface-types" }
 microkit-http-server-example-virtio-hal-impl = { path = "../../helpers/virtio-hal-impl" }
 sel4 = { git = "https://github.com/seL4/rust-sel4" }
 sel4-bounce-buffer-allocator = { git = "https://github.com/seL4/rust-sel4" }
@@ -14,6 +26,7 @@ sel4-externally-shared = { git = "https://github.com/seL4/rust-sel4", features =
 sel4-immediate-sync-once-cell = { git = "https://github.com/seL4/rust-sel4" }
 sel4-logging = { git = "https://github.com/seL4/rust-sel4" }
 sel4-microkit = { git = "https://github.com/seL4/rust-sel4", default-features = false }
+sel4-microkit-message = { git = "https://github.com/seL4/rust-sel4" }
 sel4-shared-ring-buffer = { git = "https://github.com/seL4/rust-sel4" }
 sel4-sync = { git = "https://github.com/seL4/rust-sel4" }
 virtio-drivers = { version = "0.5.0", default-features = false }
