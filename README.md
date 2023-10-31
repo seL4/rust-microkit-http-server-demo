@@ -1,3 +1,9 @@
+<!--
+     Copyright 2023, Colias Group, LLC
+
+     SPDX-License-Identifier: CC-BY-SA-4.0
+-->
+
 # HTTP Server
 
 This repository demonstrates the use of the [seL4 crates](https://github.com/seL4/rust-sel4) with
