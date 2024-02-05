@@ -59,6 +59,7 @@ endef
 
 crates := \
 	microkit-http-server-example-server \
+	microkit-http-server-example-pl031-driver \
 	microkit-http-server-example-sp804-driver \
 	microkit-http-server-example-virtio-net-driver \
 	microkit-http-server-example-virtio-blk-driver
