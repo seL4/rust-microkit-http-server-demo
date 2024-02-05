@@ -9,12 +9,9 @@ use alloc::format;
 use alloc::rc::Rc;
 use alloc::string::{String, ToString};
 use alloc::vec;
-use core::str::pattern::Pattern;
-
-use mbedtls::ssl::async_io::{AsyncIo, AsyncIoExt, ClosedError};
 
 use sel4_async_block_io_fat as fat;
-use sel4_async_network_mbedtls::mbedtls;
+use sel4_async_network_traits::{AsyncIO, AsyncIOExt, ClosedError};
 use sel4_async_unsync::Mutex;
 
 use crate::mime::content_type_from_name;
@@ -32,7 +29,7 @@ impl<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static> Server<D, T> {
         }
     }
 
-    pub(crate) async fn handle_connection<U: AsyncIo>(
+    pub(crate) async fn handle_connection<U: AsyncIO + Unpin>(
         &self,
         conn: &mut U,
     ) -> Result<(), ClosedError<U::Error>> {
@@ -40,8 +37,10 @@ impl<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static> Server<D, T> {
             let mut buf = vec![0; 1024 * 16];
             let mut i = 0;
             loop {
-                let n = conn.recv(&mut buf[i..]).await?;
-                assert_ne!(n, 0);
+                let n = conn.read(&mut buf[i..]).await?;
+                if n == 0 {
+                    return Err(ClosedError::Closed);
+                }
                 i += n;
                 if is_request_complete(&buf[..i]).unwrap_or(false) {
                     break;
@@ -69,7 +68,7 @@ impl<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static> Server<D, T> {
         Ok(())
     }
 
-    async fn handle_request<U: AsyncIo>(
+    async fn handle_request<U: AsyncIO + Unpin>(
         &self,
         conn: &mut U,
         request_path: &str,
@@ -89,7 +88,7 @@ impl<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static> Server<D, T> {
         Ok(())
     }
 
-    async fn serve_file<U: AsyncIo>(
+    async fn serve_file<U: AsyncIO + Unpin>(
         &self,
         conn: &mut U,
         content_type: &str,
@@ -120,7 +119,7 @@ impl<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static> Server<D, T> {
                     .read(file, &mut buf[..n])
                     .await
                     .unwrap();
-                conn.send_all(&buf[..n]).await?;
+                conn.write_all(&buf[..n]).await?;
                 pos += n;
             }
         }
@@ -134,7 +133,7 @@ impl<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static> Server<D, T> {
         Ok(())
     }
 
-    async fn serve_moved_permanently<U: AsyncIo>(
+    async fn serve_moved_permanently<U: AsyncIO + Unpin>(
         &self,
         conn: &mut U,
         location: &str,
@@ -148,11 +147,14 @@ impl<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static> Server<D, T> {
         self.send_response_header(conn, "Location", location.as_bytes())
             .await?;
         self.finish_response_headers(conn).await?;
-        conn.send_all(phrase.as_bytes()).await?;
+        conn.write_all(phrase.as_bytes()).await?;
         Ok(())
     }
 
-    async fn serve_not_found<U: AsyncIo>(&self, conn: &mut U) -> Result<(), ClosedError<U::Error>> {
+    async fn serve_not_found<U: AsyncIO + Unpin>(
+        &self,
+        conn: &mut U,
+    ) -> Result<(), ClosedError<U::Error>> {
         let phrase = "Not Found";
         self.start_response_headers(conn, 404, phrase).await?;
         self.send_response_header(conn, "Content-Type", b"text/plain")
@@ -160,51 +162,51 @@ impl<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static> Server<D, T> {
         self.send_response_header(conn, "Content-Length", phrase.len().to_string().as_bytes())
             .await?;
         self.finish_response_headers(conn).await?;
-        conn.send_all(phrase.as_bytes()).await?;
+        conn.write_all(phrase.as_bytes()).await?;
         Ok(())
     }
 
-    async fn start_response_headers<U: AsyncIo>(
+    async fn start_response_headers<U: AsyncIO + Unpin>(
         &self,
         conn: &mut U,
         status_code: usize,
         reason_phrase: &str,
     ) -> Result<(), ClosedError<U::Error>> {
-        conn.send_all(b"HTTP/1.1 ").await?;
-        conn.send_all(status_code.to_string().as_bytes()).await?;
-        conn.send_all(b" ").await?;
-        conn.send_all(reason_phrase.as_bytes()).await?;
-        conn.send_all(b"\r\n").await?;
+        conn.write_all(b"HTTP/1.1 ").await?;
+        conn.write_all(status_code.to_string().as_bytes()).await?;
+        conn.write_all(b" ").await?;
+        conn.write_all(reason_phrase.as_bytes()).await?;
+        conn.write_all(b"\r\n").await?;
         Ok(())
     }
 
-    async fn send_response_header<U: AsyncIo>(
+    async fn send_response_header<U: AsyncIO + Unpin>(
         &self,
         conn: &mut U,
         name: &str,
         value: &[u8],
     ) -> Result<(), ClosedError<U::Error>> {
-        conn.send_all(name.as_bytes()).await?;
-        conn.send_all(b": ").await?;
-        conn.send_all(value).await?;
-        conn.send_all(b"\r\n").await?;
+        conn.write_all(name.as_bytes()).await?;
+        conn.write_all(b": ").await?;
+        conn.write_all(value).await?;
+        conn.write_all(b"\r\n").await?;
         Ok(())
     }
 
-    async fn finish_response_headers<U: AsyncIo>(
+    async fn finish_response_headers<U: AsyncIO + Unpin>(
         &self,
         conn: &mut U,
     ) -> Result<(), ClosedError<U::Error>> {
-        conn.send_all(b"\r\n").await?;
+        conn.write_all(b"\r\n").await?;
         Ok(())
     }
 
     async fn lookup_request_path(&self, request_path: &str) -> RequestPathStatus {
         let mut volume_manager = self.volume_manager.lock().await;
-        if !"/".is_prefix_of(request_path) {
+        if !request_path.starts_with('/') {
             return RequestPathStatus::NotFound;
         }
-        let has_trailing_slash = "/".is_suffix_of(request_path);
+        let has_trailing_slash = request_path.ends_with('/');
         let mut cur = self.dir;
         for seg in request_path.split('/') {
             if seg.is_empty() {

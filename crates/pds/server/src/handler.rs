@@ -5,6 +5,7 @@
 //
 
 use alloc::boxed::Box;
+use alloc::sync::Arc;
 use core::future::Future;
 use core::pin::Pin;
 use core::time::Duration;
@@ -19,30 +20,33 @@ use sel4_async_network::{DhcpOverrides, ManagedInterface};
 use sel4_async_single_threaded_executor::{LocalPool, LocalSpawner};
 use sel4_async_time::{Instant, TimerManager};
 use sel4_bounce_buffer_allocator::Basic;
+use sel4_microkit::{Channel, Handler, Infallible};
 use sel4_shared_ring_buffer_block_io::SharedRingBufferBlockIO;
 
 use crate::{DeviceImpl, TimerClient};
+
+pub(crate) enum Never {}
 
 pub(crate) struct HandlerImpl {
     timer_driver_channel: sel4_microkit::Channel,
     net_driver_channel: sel4_microkit::Channel,
     block_driver_channel: sel4_microkit::Channel,
-    timer: TimerClient,
+    timer: Arc<TimerClient>,
     net_device: DeviceImpl<Basic>,
     shared_block_io: SharedRingBufferBlockIO<BlockSize512, ReadOnly, Basic, fn()>,
     shared_timers: TimerManager,
     shared_network: ManagedInterface,
     local_pool: LocalPool,
-    fut: LocalBoxFuture<'static, !>,
+    fut: LocalBoxFuture<'static, Never>,
 }
 
 impl HandlerImpl {
     #[allow(clippy::too_many_arguments)]
-    pub(crate) fn new<T: Future<Output = !> + 'static>(
+    pub(crate) fn new<T: Future<Output = Never> + 'static>(
         timer_driver_channel: sel4_microkit::Channel,
         net_driver_channel: sel4_microkit::Channel,
         block_driver_channel: sel4_microkit::Channel,
-        timer: TimerClient,
+        timer: Arc<TimerClient>,
         mut net_device: DeviceImpl<Basic>,
         net_config: Config,
         shared_block_io: SharedRingBufferBlockIO<BlockSize512, ReadOnly, Basic, fn()>,
@@ -132,10 +136,10 @@ impl HandlerImpl {
     }
 }
 
-impl sel4_microkit::Handler for HandlerImpl {
-    type Error = !;
+impl Handler for HandlerImpl {
+    type Error = Infallible;
 
-    fn notified(&mut self, channel: sel4_microkit::Channel) -> Result<(), Self::Error> {
+    fn notified(&mut self, channel: Channel) -> Result<(), Self::Error> {
         self.react(
             channel == self.timer_driver_channel,
             channel == self.net_driver_channel,

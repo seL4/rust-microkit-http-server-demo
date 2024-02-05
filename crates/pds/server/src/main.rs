@@ -6,18 +6,12 @@
 
 #![no_std]
 #![no_main]
-#![feature(async_fn_in_trait)]
-#![feature(int_roundings)]
-#![feature(never_type)]
-#![feature(pattern)]
-#![feature(ptr_metadata)]
-#![feature(slice_ptr_get)]
-#![feature(strict_provenance)]
-#![feature(try_blocks)]
 
 extern crate alloc;
 
 use alloc::rc::Rc;
+use alloc::sync::Arc;
+use core::time::Duration;
 
 use smoltcp::iface::Config;
 use smoltcp::phy::{Device, Medium};
@@ -26,10 +20,12 @@ use smoltcp::wire::{EthernetAddress, HardwareAddress};
 use sel4_async_block_io::{
     constant_block_sizes::BlockSize512, disk::Disk, CachedBlockIO, ConstantBlockSize,
 };
+use sel4_async_time::Instant;
 use sel4_bounce_buffer_allocator::{Basic, BounceBufferAllocator};
 use sel4_externally_shared::{ExternallySharedRef, ExternallySharedRefExt};
 use sel4_logging::{LevelFilter, Logger, LoggerBuilder};
 use sel4_microkit::{memory_region_symbol, protection_domain, Handler};
+use sel4_newlib as _;
 use sel4_shared_ring_buffer::RingBuffers;
 use sel4_shared_ring_buffer_block_io::SharedRingBufferBlockIO;
 use sel4_shared_ring_buffer_smoltcp::DeviceImpl;
@@ -40,12 +36,14 @@ mod block_client;
 mod config;
 mod handler;
 mod net_client;
+mod rtc_client;
 mod timer_client;
 
 use block_client::BlockClient;
 use config::channels;
 use handler::HandlerImpl;
 use net_client::NetClient;
+use rtc_client::RTCClient;
 use timer_client::TimerClient;
 
 const BLOCK_CACHE_SIZE_IN_BLOCKS: usize = 128;
@@ -74,11 +72,17 @@ static LOGGER: Logger = LoggerBuilder::const_default()
 fn init() -> impl Handler {
     LOGGER.set().unwrap();
 
-    setup_newlib();
-
-    let timer_client = TimerClient::new(channels::TIMER_DRIVER);
+    let rtc_client = RTCClient::new(channels::RTC_DRIVER);
+    let timer_client = Arc::new(TimerClient::new(channels::TIMER_DRIVER));
     let net_client = NetClient::new(channels::NET_DRIVER);
     let block_client = BlockClient::new(channels::BLOCK_DRIVER);
+
+    let now_unix_time = Duration::from_secs(rtc_client.now().into());
+
+    let now_fn = {
+        let timer_client = timer_client.clone();
+        move || Instant::ZERO + Duration::from_micros(timer_client.now())
+    };
 
     let notify_net: fn() = || channels::NET_DRIVER.notify();
     let notify_block: fn() = || channels::BLOCK_DRIVER.notify();
@@ -171,6 +175,8 @@ fn init() -> impl Handler {
             let fs_block_io = disk.partition_using_mbr(&entry);
             let fs_block_io = Rc::new(fs_block_io);
             run_server(
+                now_unix_time,
+                now_fn,
                 timers_ctx,
                 network_ctx,
                 fs_block_io,
@@ -182,19 +188,4 @@ fn init() -> impl Handler {
             .await
         },
     )
-}
-
-fn setup_newlib() {
-    use sel4_newlib::*;
-
-    set_static_heap_for_sbrk({
-        static HEAP: StaticHeap<{ 1024 * 1024 }> = StaticHeap::new();
-        &HEAP
-    });
-
-    set_implementations(Implementations {
-        _sbrk: Some(sbrk_with_static_heap),
-        _write: Some(write_with_debug_put_char),
-        ..Default::default()
-    })
 }

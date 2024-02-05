@@ -5,27 +5,30 @@
 //
 
 #![no_std]
-#![feature(pattern)]
 
 extern crate alloc;
 
 use alloc::boxed::Box;
 use alloc::rc::Rc;
 use alloc::sync::Arc;
+use alloc::vec;
+use core::time::Duration;
 
 use futures::future::{self, LocalBoxFuture};
 use futures::task::LocalSpawnExt;
-
-use mbedtls::ssl::async_io::ClosedError;
+use rustls::pki_types::{PrivateKeyDer, UnixTime};
+use rustls::time_provider::TimeProvider;
+use rustls::version::TLS12;
+use rustls::ServerConfig;
 
 use sel4_async_block_io::{access::ReadOnly, constant_block_sizes, BlockIO};
 use sel4_async_block_io_fat as fat;
-use sel4_async_network::{ManagedInterface, TcpSocketError};
-use sel4_async_network_mbedtls::{
-    insecure_dummy_rng, mbedtls, seed_insecure_dummy_rng, DbgCallbackBuilder, TcpSocketWrapper,
-};
+use sel4_async_network::{ManagedInterface, TcpSocket, TcpSocketError};
+use sel4_async_network_rustls::{Error as AsyncRustlsError, ServerConnector};
+use sel4_async_network_rustls_utils::GetCurrentTimeImpl;
+use sel4_async_network_traits::ClosedError;
 use sel4_async_single_threaded_executor::LocalSpawner;
-use sel4_async_time::TimerManager;
+use sel4_async_time::{Instant, TimerManager};
 
 mod mime;
 mod server;
@@ -35,9 +38,12 @@ use server::Server;
 const HTTP_PORT: u16 = 80;
 const HTTPS_PORT: u16 = 443;
 
+#[allow(clippy::too_many_arguments)] // TODO
 pub async fn run_server<
-    T: BlockIO<ReadOnly, BlockSize = constant_block_sizes::BlockSize512> + Clone,
+    T: BlockIO<ReadOnly, BlockSize = constant_block_sizes::BlockSize512> + Clone + 'static,
 >(
+    now_unix_time: Duration,
+    now_fn: impl 'static + Send + Sync + Fn() -> Instant,
     _timers_ctx: TimerManager,
     network_ctx: ManagedInterface,
     fs_block_io: T,
@@ -46,13 +52,6 @@ pub async fn run_server<
     priv_pem: &str,
     max_num_simultaneous_connections: usize,
 ) -> ! {
-    #[cfg(feature = "debug")]
-    unsafe {
-        mbedtls::set_global_debug_threshold(1);
-    }
-
-    seed_insecure_dummy_rng(0);
-
     let use_socket_for_http_closure: SocketUser<T> = Box::new({
         move |server, socket| {
             Box::pin(async move {
@@ -65,12 +64,13 @@ pub async fn run_server<
         }
     });
 
+    let tls_config = Arc::new(mk_tls_config(cert_pem, priv_pem, now_unix_time, now_fn));
+
     let use_socket_for_https_closure: SocketUser<T> = Box::new({
-        let config = Arc::new(mk_config(cert_pem, priv_pem).unwrap());
         move |server, socket| {
-            let config = config.clone();
+            let tls_config = tls_config.clone();
             Box::pin(async move {
-                use_socket_for_https(server, config, socket)
+                use_socket_for_https(server, tls_config, socket)
                     .await
                     .unwrap_or_else(|err| {
                         log::warn!("error: {err:?}");
@@ -96,7 +96,7 @@ pub async fn run_server<
                             let dir = volume_manager.open_root_dir().unwrap();
                             let server = Server::new(volume_manager, dir);
                             let socket = network_ctx.new_tcp_socket_with_buffer_sizes(8192, 65535);
-                            f(server, TcpSocketWrapper::new(socket)).await;
+                            f(server, socket).await;
                         }
                     }
                 })
@@ -110,56 +110,77 @@ pub async fn run_server<
 type SocketUser<T> = Box<
     dyn Fn(
         Server<fat::BlockIOWrapper<T, ReadOnly>, fat::DummyTimeSource>,
-        TcpSocketWrapper,
+        TcpSocket,
     ) -> LocalBoxFuture<'static, ()>,
 >;
 
 async fn use_socket_for_http<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static>(
     server: Server<D, T>,
-    mut socket: TcpSocketWrapper,
+    mut socket: TcpSocket,
 ) -> Result<(), ClosedError<TcpSocketError>> {
-    socket.inner_mut().accept(HTTP_PORT).await?;
+    socket.accept(HTTP_PORT).await?;
     server.handle_connection(&mut socket).await?;
-    socket.inner_mut().close().await?;
+    socket.close().await?;
     Ok(())
 }
 
 async fn use_socket_for_https<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static>(
     server: Server<D, T>,
-    config: Arc<mbedtls::ssl::Config>,
-    mut socket: TcpSocketWrapper,
-) -> Result<(), ClosedError<mbedtls::Error>> {
-    socket.inner_mut().accept(HTTPS_PORT).await.unwrap(); // TODO
-    let mut ctx = mbedtls::ssl::Context::new(config);
-    ctx.establish_async(socket, None).await?;
-    server.handle_connection(&mut ctx).await?;
-    ctx.close_async().await?;
-    let _ = ctx.take_io().unwrap().inner_mut().close().await; // TODO
+    tls_config: Arc<ServerConfig>,
+    mut socket: TcpSocket,
+) -> Result<(), ClosedError<AsyncRustlsError<TcpSocketError>>> {
+    socket
+        .accept(HTTPS_PORT)
+        .await
+        .map_err(AsyncRustlsError::TransitError)?;
+
+    let mut conn = ServerConnector::from(tls_config).connect(socket)?.await?;
+
+    server.handle_connection(&mut conn).await?;
+
+    // TODO TcpSocket doesn't support stateless .poll_close() yet, so we close the socket directly
+    conn.into_io()
+        .close()
+        .await
+        .map_err(AsyncRustlsError::TransitError)?;
+
     Ok(())
 }
 
-fn mk_config(cert_pem: &str, priv_pem: &str) -> mbedtls::Result<mbedtls::ssl::Config> {
-    let entropy = Arc::new(insecure_dummy_rng());
-    let rng = Arc::new(mbedtls::rng::CtrDrbg::new(entropy, None)?);
-    let cert = Arc::new(mbedtls::x509::Certificate::from_pem_multiple(
-        cert_pem.as_bytes(),
-    )?);
-    let key = Arc::new(mbedtls::pk::Pk::from_private_key(
-        &mut insecure_dummy_rng(),
-        priv_pem.as_bytes(),
-        None,
-    )?);
-    let mut config = mbedtls::ssl::Config::new(
-        mbedtls::ssl::config::Endpoint::Server,
-        mbedtls::ssl::config::Transport::Stream,
-        mbedtls::ssl::config::Preset::Default,
-    );
-    config.set_rng(rng);
-    config.push_cert(cert, key)?;
-    config.set_dbg_callback(
-        DbgCallbackBuilder::default()
-            .forward_log_level(log::Level::Warn)
-            .build(),
-    );
-    Ok(config)
+fn mk_tls_config(
+    cert_pem: &str,
+    priv_pem: &str,
+    now_unix_time: Duration,
+    now_fn: impl 'static + Send + Sync + Fn() -> Instant,
+) -> ServerConfig {
+    let cert_der = match rustls_pemfile::read_one_from_slice(cert_pem.as_bytes())
+        .unwrap()
+        .unwrap()
+        .0
+    {
+        rustls_pemfile::Item::X509Certificate(cert) => cert,
+        _ => panic!(),
+    };
+
+    let key_der = match rustls_pemfile::read_one_from_slice(priv_pem.as_bytes())
+        .unwrap()
+        .unwrap()
+        .0
+    {
+        rustls_pemfile::Item::Pkcs1Key(der) => PrivateKeyDer::Pkcs1(der),
+        rustls_pemfile::Item::Pkcs8Key(der) => PrivateKeyDer::Pkcs8(der),
+        rustls_pemfile::Item::Sec1Key(der) => PrivateKeyDer::Sec1(der),
+        _ => panic!(),
+    };
+
+    let mut config = ServerConfig::builder_with_protocol_versions(&[&TLS12])
+        .with_no_client_auth()
+        .with_single_cert(vec![cert_der], key_der)
+        .unwrap();
+    config.time_provider = TimeProvider::new(GetCurrentTimeImpl::new(
+        UnixTime::since_unix_epoch(now_unix_time),
+        now_fn,
+    ));
+
+    config
 }
