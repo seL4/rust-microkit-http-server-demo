@@ -23,42 +23,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "android-tzdata"
-version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e999941b234f3131b00bc13c22d06e8c5ff726d1b6318ac7eb276997bbb4fef0"
-
-[[package]]
-name = "android_system_properties"
-version = "0.1.5"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "819e7219dbd41043ac279b19830f2efc897156490d7fd6ea916720117ee66311"
-dependencies = [
- "libc",
-]
-
-[[package]]
-name = "annotate-snippets"
-version = "0.9.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c3b9d411ecbaf79885c6df4d75fff75858d5995ff25385657a28af47e82f9c36"
-dependencies = [
- "unicode-width",
- "yansi-term",
-]
-
-[[package]]
-name = "async-trait"
-version = "0.1.73"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc00ceb34980c03614e35a3a4e218276a0a824e911d07651cd0d858a51e8c0f0"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.32",
-]
-
-[[package]]
 name = "async-unsync"
 version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -84,30 +48,6 @@ name = "base64"
 version = "0.21.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "604178f6c5c21f02dc555784810edfb88d34ac2c73b2eae109655649ee73ce3d"
-
-[[package]]
-name = "bindgen"
-version = "0.65.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cfdf7b466f9a4903edc73f95d6d2bcd5baf8ae620638762244d3f60143643cc5"
-dependencies = [
- "annotate-snippets",
- "bitflags 1.3.2",
- "cexpr",
- "clang-sys",
- "lazy_static",
- "lazycell",
- "log",
- "peeking_take_while",
- "prettyplease",
- "proc-macro2",
- "quote",
- "regex",
- "rustc-hash",
- "shlex",
- "syn 2.0.32",
- "which",
-]
 
 [[package]]
 name = "bindgen"
@@ -216,20 +156,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "chrono"
-version = "0.4.31"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7f2c685bad3eb3d45a01354cedb7d5faa66194d1d58ba6e267a8de788f79db38"
-dependencies = [
- "android-tzdata",
- "iana-time-zone",
- "js-sys",
- "num-traits",
- "wasm-bindgen",
- "windows-targets",
-]
-
-[[package]]
 name = "clang-sys"
 version = "1.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -241,25 +167,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "cmake"
-version = "0.1.50"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a31c789563b815f77f4250caee12365734369f942439b7defd71e18a48197130"
-dependencies = [
- "cc",
-]
-
-[[package]]
 name = "cobs"
 version = "0.2.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67ba02a97a2bd10f4b59b25c7973101c79642302776489e030cd13cdab09ed15"
-
-[[package]]
-name = "core-foundation-sys"
-version = "0.8.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e496a50fda8aacccc86d7529e2c1e0892dbd0f898a6b5645b5561b89c3210efa"
 
 [[package]]
 name = "cpufeatures"
@@ -464,6 +375,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "getrandom"
+version = "0.2.12"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "190092ea657667030ac6a35e305e62fc4dd69fd98ac98631e5d3a2b1575a12b5"
+dependencies = [
+ "cfg-if",
+ "libc",
+ "wasi",
+]
+
+[[package]]
 name = "gimli"
 version = "0.26.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -531,29 +453,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d897f394bad6a705d5f4104762e116a75639e470d80901eed05a860a95cb1904"
 
 [[package]]
-name = "iana-time-zone"
-version = "0.1.57"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2fad5b825842d2b38bd206f3e81d6957625fd7f0a361e345c30e01a0ae2dd613"
-dependencies = [
- "android_system_properties",
- "core-foundation-sys",
- "iana-time-zone-haiku",
- "js-sys",
- "wasm-bindgen",
- "windows",
-]
-
-[[package]]
-name = "iana-time-zone-haiku"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f31827a206f56af32e590ba56d5d2d085f558508192593743f16b2306495269f"
-dependencies = [
- "cc",
-]
-
-[[package]]
 name = "itoa"
 version = "1.0.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -582,9 +481,9 @@ checksum = "830d08ce1d1d941e6b30645f1a0eb5643013d835ce3779a5fc208261dbe10f55"
 
 [[package]]
 name = "libc"
-version = "0.2.147"
+version = "0.2.153"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b4668fb0ea861c1df094127ac5f1da3409a82116a4ba74fca2e58ef927159bb3"
+checksum = "9c198f91728a82281a64e1f4f9eeb25d82cb32a5de251c6bd1b5154d63a8e7bd"
 
 [[package]]
 name = "libloading"
@@ -598,9 +497,9 @@ dependencies = [
 
 [[package]]
 name = "lock_api"
-version = "0.4.10"
+version = "0.4.11"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c1cc9717a20b1bb222f333e6a92fd32f7d8a18ddc5a3191a11af45dcbf4dcd16"
+checksum = "3c168f8615b12bc01f9c17e2eb0cc07dcae1940121185446edc3744920e8ef45"
 dependencies = [
  "autocfg",
  "scopeguard",
@@ -628,57 +527,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0ca88d725a0a943b096803bd34e73a4437208b6077654cc4ecb2947a5f91618d"
 
 [[package]]
-name = "mbedtls"
-version = "0.11.0"
-source = "git+https://github.com/coliasgroup/rust-mbedtls?tag=keep/30d001b63baea36135b2590c4fd05e95#30d001b63baea36135b2590c4fd05e95e464234c"
-dependencies = [
- "async-trait",
- "bitflags 1.3.2",
- "byteorder",
- "cc",
- "cfg-if",
- "futures",
- "mbedtls-platform-support",
- "mbedtls-sys-auto",
- "rs-libc",
- "serde",
- "serde_derive",
-]
-
-[[package]]
-name = "mbedtls-platform-support"
-version = "0.3.0"
-source = "git+https://github.com/coliasgroup/rust-mbedtls?tag=keep/30d001b63baea36135b2590c4fd05e95#30d001b63baea36135b2590c4fd05e95e464234c"
-dependencies = [
- "cc",
- "cfg-if",
- "chrono",
- "mbedtls-sys-auto",
- "once_cell",
- "spin 0.5.2",
- "zeroize",
-]
-
-[[package]]
-name = "mbedtls-sys-auto"
-version = "3.5.0-alpha.3+0b3de6f"
-source = "git+https://github.com/coliasgroup/rust-mbedtls?tag=keep/30d001b63baea36135b2590c4fd05e95#30d001b63baea36135b2590c4fd05e95e464234c"
-dependencies = [
- "bindgen 0.65.1",
- "cc",
- "cfg-if",
- "cmake",
- "lazy_static",
- "libc",
- "quote",
- "syn 1.0.109",
-]
-
-[[package]]
 name = "memchr"
 version = "2.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
+
+[[package]]
+name = "microkit-http-server-example-pl031-driver-interface-types"
+version = "0.1.0"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "microkit-http-server-example-server"
@@ -687,6 +546,7 @@ dependencies = [
  "async-unsync",
  "futures",
  "log",
+ "microkit-http-server-example-pl031-driver-interface-types",
  "microkit-http-server-example-server-core",
  "microkit-http-server-example-sp804-driver-interface-types",
  "microkit-http-server-example-virtio-blk-driver-interface-types",
@@ -710,7 +570,6 @@ dependencies = [
  "sel4-shared-ring-buffer-block-io-types",
  "sel4-shared-ring-buffer-bookkeeping",
  "sel4-shared-ring-buffer-smoltcp",
- "sel4-sync",
  "smoltcp",
 ]
 
@@ -721,15 +580,20 @@ dependencies = [
  "futures",
  "httparse",
  "log",
- "mbedtls",
+ "rustls",
+ "rustls-pemfile",
  "sel4-async-block-io",
  "sel4-async-block-io-fat",
  "sel4-async-network",
- "sel4-async-network-mbedtls",
+ "sel4-async-network-rustls",
+ "sel4-async-network-rustls-utils",
+ "sel4-async-network-traits",
  "sel4-async-single-threaded-executor",
  "sel4-async-time",
  "sel4-async-unsync",
  "sel4-panicking-env",
+ "smoltcp",
+ "webpki-roots",
 ]
 
 [[package]]
@@ -773,7 +637,6 @@ dependencies = [
  "sel4-microkit-message",
  "sel4-shared-ring-buffer",
  "sel4-shared-ring-buffer-block-io-types",
- "sel4-sync",
  "virtio-drivers",
 ]
 
@@ -811,7 +674,6 @@ dependencies = [
  "sel4-microkit",
  "sel4-microkit-message",
  "sel4-shared-ring-buffer",
- "sel4-sync",
  "virtio-drivers",
 ]
 
@@ -836,15 +698,6 @@ checksum = "d273983c5a657a70a3e8f2a01329822f3b8c8172b73826411a55751e404a0a4a"
 dependencies = [
  "memchr",
  "minimal-lexical",
-]
-
-[[package]]
-name = "num-traits"
-version = "0.2.16"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f30b0abd723be7e2ffca1272140fac1a2f084c77ec3e123c192b66af1ee9e6c2"
-dependencies = [
- "autocfg",
 ]
 
 [[package]]
@@ -1049,7 +902,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4954fbc00dcd4d8282c987710e50ba513d351400dbdd00e803a05172a90d8976"
 dependencies = [
  "pem",
- "ring",
+ "ring 0.16.20",
  "time",
  "yasna",
 ]
@@ -1093,19 +946,23 @@ dependencies = [
  "libc",
  "once_cell",
  "spin 0.5.2",
- "untrusted",
+ "untrusted 0.7.1",
  "web-sys",
  "winapi",
 ]
 
 [[package]]
-name = "rs-libc"
-version = "0.2.4"
+name = "ring"
+version = "0.17.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "683e8c8e8aac6ffa4b2287bac3c69575d5346accac4f218ae1e084303bb174ca"
+checksum = "688c63d65483050968b2a8937f7995f443e27041a0f7700aa59b0822aedebb74"
 dependencies = [
  "cc",
- "zeroize",
+ "getrandom",
+ "libc",
+ "spin 0.9.8",
+ "untrusted 0.9.0",
+ "windows-sys",
 ]
 
 [[package]]
@@ -1124,6 +981,46 @@ dependencies = [
 ]
 
 [[package]]
+name = "rustls"
+version = "0.23.0-alpha.0"
+source = "git+https://github.com/coliasgroup/rustls.git?rev=c315801aa0c1e9c765b27106b3969dd458995cc7#c315801aa0c1e9c765b27106b3969dd458995cc7"
+dependencies = [
+ "log",
+ "ring 0.17.7",
+ "rustls-pki-types",
+ "rustls-webpki",
+ "subtle",
+ "zeroize",
+]
+
+[[package]]
+name = "rustls-pemfile"
+version = "2.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "35e4980fa29e4c4b212ffb3db068a564cbf560e51d3944b7c88bd8bf5bec64f4"
+dependencies = [
+ "base64",
+ "rustls-pki-types",
+]
+
+[[package]]
+name = "rustls-pki-types"
+version = "1.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0a716eb65e3158e90e17cd93d855216e27bde02745ab842f2cab4a39dba1bacf"
+
+[[package]]
+name = "rustls-webpki"
+version = "0.102.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "faaa0a62740bedb9b2ef5afa303da42764c012f743917351dc9a237ea1663610"
+dependencies = [
+ "ring 0.17.7",
+ "rustls-pki-types",
+ "untrusted 0.9.0",
+]
+
+[[package]]
 name = "ryu"
 version = "1.0.15"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1138,7 +1035,7 @@ checksum = "94143f37725109f92c262ed2cf5e59bce7498c01bcc1502d7b9afe439a4e9f49"
 [[package]]
 name = "sel4"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "cfg-if",
  "sel4-config",
@@ -1148,7 +1045,7 @@ dependencies = [
 [[package]]
 name = "sel4-async-block-io"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "bytemuck",
  "futures",
@@ -1161,7 +1058,7 @@ dependencies = [
 [[package]]
 name = "sel4-async-block-io-fat"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "embedded-fat",
  "futures",
@@ -1175,35 +1072,49 @@ dependencies = [
 [[package]]
 name = "sel4-async-network"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "futures",
  "log",
+ "sel4-async-network-traits",
  "smoltcp",
 ]
 
 [[package]]
-name = "sel4-async-network-mbedtls"
+name = "sel4-async-network-rustls"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "futures",
  "log",
- "mbedtls",
- "rand",
- "sel4-async-network",
- "sel4-async-network-mbedtls-mozilla-ca-list",
+ "rustls",
+ "sel4-async-network-traits",
 ]
 
 [[package]]
-name = "sel4-async-network-mbedtls-mozilla-ca-list"
+name = "sel4-async-network-rustls-utils"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
+dependencies = [
+ "getrandom",
+ "rand",
+ "ring 0.17.7",
+ "rustls",
+ "sel4-async-time",
+]
+
+[[package]]
+name = "sel4-async-network-traits"
+version = "0.1.0"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
+dependencies = [
+ "futures",
+]
 
 [[package]]
 name = "sel4-async-single-threaded-executor"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "futures",
 ]
@@ -1211,7 +1122,7 @@ dependencies = [
 [[package]]
 name = "sel4-async-time"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "log",
  "pin-project",
@@ -1220,20 +1131,28 @@ dependencies = [
 [[package]]
 name = "sel4-async-unsync"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "async-unsync",
 ]
 
 [[package]]
+name = "sel4-atomic-ptr"
+version = "0.1.0"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
+dependencies = [
+ "cfg-if",
+]
+
+[[package]]
 name = "sel4-bitfield-ops"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 
 [[package]]
 name = "sel4-bitfield-parser"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "pest",
  "pest_derive",
@@ -1243,7 +1162,7 @@ dependencies = [
 [[package]]
 name = "sel4-bounce-buffer-allocator"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "log",
 ]
@@ -1251,12 +1170,12 @@ dependencies = [
 [[package]]
 name = "sel4-build-env"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 
 [[package]]
 name = "sel4-config"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "sel4-config-macros",
 ]
@@ -1264,7 +1183,7 @@ dependencies = [
 [[package]]
 name = "sel4-config-data"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "lazy_static",
  "sel4-build-env",
@@ -1275,7 +1194,7 @@ dependencies = [
 [[package]]
 name = "sel4-config-generic-macro-impls"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "fallible-iterator",
  "proc-macro2",
@@ -1287,7 +1206,7 @@ dependencies = [
 [[package]]
 name = "sel4-config-generic-types"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "serde",
 ]
@@ -1295,7 +1214,7 @@ dependencies = [
 [[package]]
 name = "sel4-config-macros"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "sel4-config-data",
  "sel4-config-generic-macro-impls",
@@ -1304,44 +1223,45 @@ dependencies = [
 [[package]]
 name = "sel4-dlmalloc"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "dlmalloc",
- "sel4-sync",
+ "lock_api",
 ]
 
 [[package]]
 name = "sel4-externally-shared"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
+ "cfg-if",
+ "sel4-atomic-ptr",
  "volatile",
- "zerocopy 0.7.20",
+ "zerocopy 0.7.32",
 ]
 
 [[package]]
 name = "sel4-immediate-sync-once-cell"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 
 [[package]]
 name = "sel4-immutable-cell"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 
 [[package]]
 name = "sel4-initialize-tls-on-stack"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "cfg-if",
- "sel4",
 ]
 
 [[package]]
 name = "sel4-logging"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "log",
 ]
@@ -1349,10 +1269,11 @@ dependencies = [
 [[package]]
 name = "sel4-microkit"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "cfg-if",
  "sel4",
+ "sel4-dlmalloc",
  "sel4-externally-shared",
  "sel4-immediate-sync-once-cell",
  "sel4-immutable-cell",
@@ -1360,12 +1281,13 @@ dependencies = [
  "sel4-panicking",
  "sel4-panicking-env",
  "sel4-runtime-common",
+ "sel4-sync",
 ]
 
 [[package]]
 name = "sel4-microkit-macros"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -1375,7 +1297,7 @@ dependencies = [
 [[package]]
 name = "sel4-microkit-message"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "sel4-microkit",
  "sel4-microkit-message-types",
@@ -1385,29 +1307,27 @@ dependencies = [
 [[package]]
 name = "sel4-microkit-message-types"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "num_enum",
  "postcard",
  "serde",
- "zerocopy 0.7.20",
+ "zerocopy 0.7.32",
 ]
 
 [[package]]
 name = "sel4-newlib"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "cc",
- "log",
- "sel4-immediate-sync-once-cell",
  "sel4-panicking-env",
 ]
 
 [[package]]
 name = "sel4-panicking"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "cfg-if",
  "sel4-immediate-sync-once-cell",
@@ -1418,24 +1338,24 @@ dependencies = [
 [[package]]
 name = "sel4-panicking-env"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 
 [[package]]
 name = "sel4-runtime-common"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "cfg-if",
- "sel4-dlmalloc",
+ "sel4",
  "sel4-initialize-tls-on-stack",
- "sel4-sync",
+ "sel4-panicking-env",
  "unwinding",
 ]
 
 [[package]]
 name = "sel4-rustfmt-helper"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "which",
 ]
@@ -1443,17 +1363,17 @@ dependencies = [
 [[package]]
 name = "sel4-shared-ring-buffer"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "log",
  "sel4-externally-shared",
- "zerocopy 0.7.20",
+ "zerocopy 0.7.32",
 ]
 
 [[package]]
 name = "sel4-shared-ring-buffer-block-io"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "async-unsync",
  "futures",
@@ -1469,17 +1389,17 @@ dependencies = [
 [[package]]
 name = "sel4-shared-ring-buffer-block-io-types"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "num_enum",
  "sel4-shared-ring-buffer",
- "zerocopy 0.7.20",
+ "zerocopy 0.7.32",
 ]
 
 [[package]]
 name = "sel4-shared-ring-buffer-bookkeeping"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "async-unsync",
 ]
@@ -1487,7 +1407,7 @@ dependencies = [
 [[package]]
 name = "sel4-shared-ring-buffer-smoltcp"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
  "log",
  "sel4-bounce-buffer-allocator",
@@ -1500,8 +1420,9 @@ dependencies = [
 [[package]]
 name = "sel4-sync"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
+ "lock_api",
  "sel4",
  "sel4-immediate-sync-once-cell",
 ]
@@ -1509,9 +1430,9 @@ dependencies = [
 [[package]]
 name = "sel4-sys"
 version = "0.1.0"
-source = "git+https://github.com/seL4/rust-sel4#4a2e12565e1ee1fce6fc4ef012f412ab29243a5a"
+source = "git+https://github.com/seL4/rust-sel4#e9dd69cf7608413656982113949a5229ce5d90a5"
 dependencies = [
- "bindgen 0.68.1",
+ "bindgen",
  "glob",
  "log",
  "proc-macro2",
@@ -1592,6 +1513,7 @@ dependencies = [
  "cfg-if",
  "defmt",
  "heapless",
+ "log",
  "managed",
 ]
 
@@ -1615,6 +1537,12 @@ name = "stable_deref_trait"
 version = "1.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3"
+
+[[package]]
+name = "subtle"
+version = "2.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "81cdd64d312baedb58e21336b31bc043b77e01cc99033ce76ef539f78e965ebc"
 
 [[package]]
 name = "syn"
@@ -1718,16 +1646,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "301abaae475aa91687eb82514b328ab47a211a533026cb25fc3e519b86adfc3c"
 
 [[package]]
-name = "unicode-width"
-version = "0.1.10"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c0edd1e5b14653f783770bce4a4dabb4a5108a5370a5f5d8cfe8710c361f6c8b"
-
-[[package]]
 name = "untrusted"
 version = "0.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a156c684c91ea7d62626509bce3cb4e1d9ed5c4d978f7b4352658f96a4c26b4a"
+
+[[package]]
+name = "untrusted"
+version = "0.9.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8ecb6da28b8a351d773b68d5825ac39017e680750f980f3a1a85cd8dd28a47c1"
 
 [[package]]
 name = "unwinding"
@@ -1758,7 +1686,13 @@ dependencies = [
 [[package]]
 name = "volatile"
 version = "0.5.1"
-source = "git+https://github.com/coliasgroup/volatile.git?tag=keep/8aee5539716d3d38247f46eddd42b382#8aee5539716d3d38247f46eddd42b3828406c008"
+source = "git+https://github.com/coliasgroup/volatile.git?tag=keep/aa7512906e9b76066ed928eb6986b0f9#aa7512906e9b76066ed928eb6986b0f9b1750e91"
+
+[[package]]
+name = "wasi"
+version = "0.11.0+wasi-snapshot-preview1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423"
 
 [[package]]
 name = "wasm-bindgen"
@@ -1825,6 +1759,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "webpki-roots"
+version = "0.26.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b3de34ae270483955a94f4b21bdaaeb83d508bb84a01435f393818edb0012009"
+dependencies = [
+ "rustls-pki-types",
+]
+
+[[package]]
 name = "which"
 version = "4.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1858,10 +1801,10 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "712e227841d057c1ee1cd2fb22fa7e5a5461ae8e48fa2ca79ec42cfc1931183f"
 
 [[package]]
-name = "windows"
+name = "windows-sys"
 version = "0.48.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e686886bc078bc1b0b600cac0147aadb815089b6e4da64016cbd754b6342700f"
+checksum = "677d2418bec65e3338edb076e806bc1ec15693c5d0104683f2efe857f61056a9"
 dependencies = [
  "windows-targets",
 ]
@@ -1939,15 +1882,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "yansi-term"
-version = "0.1.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "fe5c30ade05e61656247b2e334a031dfd0cc466fadef865bdcdea8d537951bf1"
-dependencies = [
- "winapi",
-]
-
-[[package]]
 name = "yasna"
 version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1968,12 +1902,12 @@ dependencies = [
 
 [[package]]
 name = "zerocopy"
-version = "0.7.20"
+version = "0.7.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dd66a62464e3ffd4e37bd09950c2b9dd6c4f8767380fabba0d523f9a775bc85a"
+checksum = "74d4d3961e53fa4c9a25a8637fc2bfaf2595b3d3ae34875568a5cf64787716be"
 dependencies = [
  "byteorder",
- "zerocopy-derive 0.7.20",
+ "zerocopy-derive 0.7.32",
 ]
 
 [[package]]
@@ -1989,9 +1923,9 @@ dependencies = [
 
 [[package]]
 name = "zerocopy-derive"
-version = "0.7.20"
+version = "0.7.32"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "255c4596d41e6916ced49cfafea18727b24d67878fa180ddfd69b9df34fd1726"
+checksum = "9ce1b18ccd8e73a9321186f97e46f9f04b778851177567b1975109d26a08d2a6"
 dependencies = [
  "proc-macro2",
  "quote",

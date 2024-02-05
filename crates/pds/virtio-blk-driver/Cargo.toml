@@ -28,7 +28,6 @@ sel4-logging = { git = "https://github.com/seL4/rust-sel4" }
 sel4-microkit = { git = "https://github.com/seL4/rust-sel4", default-features = false }
 sel4-microkit-message = { git = "https://github.com/seL4/rust-sel4" }
 sel4-shared-ring-buffer = { git = "https://github.com/seL4/rust-sel4" }
-sel4-sync = { git = "https://github.com/seL4/rust-sel4" }
 virtio-drivers = { version = "0.5.0", default-features = false }
 
 [dependencies.sel4-shared-ring-buffer-block-io-types]

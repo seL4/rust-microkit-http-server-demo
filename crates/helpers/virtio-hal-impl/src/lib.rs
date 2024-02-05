@@ -5,9 +5,6 @@
 //
 
 #![no_std]
-#![feature(ptr_metadata)]
-#![feature(slice_ptr_get)]
-#![feature(strict_provenance)]
 
 use core::alloc::Layout;
 use core::ptr::{self, NonNull};
@@ -17,9 +14,9 @@ use virtio_drivers::{BufferDirection, Hal, PhysAddr, PAGE_SIZE};
 use sel4_bounce_buffer_allocator::{Basic, BounceBufferAllocator};
 use sel4_externally_shared::{ExternallySharedRef, ExternallySharedRefExt};
 use sel4_immediate_sync_once_cell::ImmediateSyncOnceCell;
-use sel4_sync::{GenericMutex, PanickingMutexSyncOps};
+use sel4_sync::{lock_api::Mutex, GenericRawMutex, PanickingMutexSyncOps};
 
-static GLOBAL_STATE: ImmediateSyncOnceCell<GenericMutex<PanickingMutexSyncOps, State>> =
+static GLOBAL_STATE: ImmediateSyncOnceCell<Mutex<GenericRawMutex<PanickingMutexSyncOps>, State>> =
     ImmediateSyncOnceCell::new();
 
 struct State {
@@ -42,8 +39,8 @@ pub struct HalImpl;
 
 impl HalImpl {
     pub fn init(dma_region_size: usize, dma_region_vaddr: usize, dma_region_paddr: usize) {
-        let dma_region_ptr = NonNull::new(ptr::from_raw_parts_mut(
-            ptr::from_exposed_addr_mut(dma_region_vaddr),
+        let dma_region_ptr = NonNull::new(ptr::slice_from_raw_parts_mut(
+            dma_region_vaddr as *mut _,
             dma_region_size,
         ))
         .unwrap();
@@ -59,8 +56,8 @@ impl HalImpl {
             BounceBufferAllocator::new(Basic::new(dma_region_size), max_alignment);
 
         GLOBAL_STATE
-            .set(GenericMutex::new(
-                PanickingMutexSyncOps::new(),
+            .set(Mutex::const_new(
+                GenericRawMutex::new(PanickingMutexSyncOps::new()),
                 State {
                     dma_region,
                     dma_region_paddr,
@@ -83,7 +80,7 @@ unsafe impl Hal for HalImpl {
             .as_mut_ptr()
             .index(bounce_buffer_range.clone());
         bounce_buffer_ptr.fill(0);
-        let vaddr = bounce_buffer_ptr.as_raw_ptr().as_non_null_ptr();
+        let vaddr = bounce_buffer_ptr.as_raw_ptr().cast::<u8>();
         let paddr = state.offset_to_paddr(bounce_buffer_range.start);
         (paddr, vaddr)
     }
