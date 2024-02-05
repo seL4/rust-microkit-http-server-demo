@@ -533,6 +533,24 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2dffe52ecf27772e601905b7522cb4ef790d2cc203488bbd0e2fe85fcb74566d"
 
 [[package]]
+name = "microkit-http-server-example-pl031-driver"
+version = "0.1.0"
+dependencies = [
+ "microkit-http-server-example-pl031-driver-core",
+ "microkit-http-server-example-pl031-driver-interface-types",
+ "sel4-microkit",
+ "sel4-microkit-message",
+]
+
+[[package]]
+name = "microkit-http-server-example-pl031-driver-core"
+version = "0.1.0"
+dependencies = [
+ "log",
+ "tock-registers",
+]
+
+[[package]]
 name = "microkit-http-server-example-pl031-driver-interface-types"
 version = "0.1.0"
 dependencies = [
@@ -954,8 +972,7 @@ dependencies = [
 [[package]]
 name = "ring"
 version = "0.17.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "688c63d65483050968b2a8937f7995f443e27041a0f7700aa59b0822aedebb74"
+source = "git+https://github.com/coliasgroup/ring.git?rev=10a2b3cbe68da77f9f20ebb3776ab4c605f2b40e#10a2b3cbe68da77f9f20ebb3776ab4c605f2b40e"
 dependencies = [
  "cc",
  "getrandom",
