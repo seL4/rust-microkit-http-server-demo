@@ -8,7 +8,7 @@ BUILD ?= build
 
 build_dir := $(BUILD)
 
-microkit_board := qemu_arm_virt
+microkit_board := qemu_virt_aarch64
 microkit_config := debug
 microkit_sdk_config_dir := $(MICROKIT_SDK)/board/$(microkit_board)/$(microkit_config)
 
@@ -22,7 +22,6 @@ clean:
 ### Protection domains
 
 target_cc := aarch64-none-elf-gcc
-target_bindgen_clang_args := --sysroot=/opt/gcc-aarch64-none-elf-sysroot
 
 rust_target_path := support/targets
 rust_microkit_target := aarch64-sel4-microkit
@@ -30,7 +29,6 @@ target_dir := $(build_dir)/target
 
 common_env := \
 	CC_$(subst -,_,$(rust_microkit_target))=$(target_cc) \
-	BINDGEN_EXTRA_CLANG_ARGS_$(subst -,_,$(rust_microkit_target))="$(target_bindgen_clang_args)" \
 	SEL4_INCLUDE_DIRS=$(abspath $(microkit_sdk_config_dir)/include)
 
 common_options := \
@@ -93,8 +91,7 @@ $(disk_img): $(compressed_disk_img)
 
 qemu_cmd := \
 	qemu-system-aarch64 \
-		-machine virt \
-		-cpu cortex-a53 -m size=1G \
+		-machine virt -cpu cortex-a53 -m size=2G \
 		-device loader,file=$(loader),addr=0x70000000,cpu-num=0 \
 		-serial mon:stdio \
 		-nographic \
