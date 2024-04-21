@@ -17,16 +17,15 @@ use core::time::Duration;
 use futures::future::{self, LocalBoxFuture};
 use futures::task::LocalSpawnExt;
 use rustls::pki_types::{PrivateKeyDer, UnixTime};
-use rustls::time_provider::TimeProvider;
 use rustls::version::TLS12;
 use rustls::ServerConfig;
 
 use sel4_async_block_io::{access::ReadOnly, constant_block_sizes, BlockIO};
 use sel4_async_block_io_fat as fat;
+use sel4_async_io::ReadExactError;
 use sel4_async_network::{ManagedInterface, TcpSocket, TcpSocketError};
 use sel4_async_network_rustls::{Error as AsyncRustlsError, ServerConnector};
-use sel4_async_network_rustls_utils::GetCurrentTimeImpl;
-use sel4_async_network_traits::ClosedError;
+use sel4_async_network_rustls_utils::TimeProviderImpl;
 use sel4_async_single_threaded_executor::LocalSpawner;
 use sel4_async_time::{Instant, TimerManager};
 
@@ -117,10 +116,10 @@ type SocketUser<T> = Box<
 async fn use_socket_for_http<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static>(
     server: Server<D, T>,
     mut socket: TcpSocket,
-) -> Result<(), ClosedError<TcpSocketError>> {
+) -> Result<(), ReadExactError<TcpSocketError>> {
     socket.accept(HTTP_PORT).await?;
     server.handle_connection(&mut socket).await?;
-    socket.close().await?;
+    socket.close();
     Ok(())
 }
 
@@ -128,7 +127,7 @@ async fn use_socket_for_https<D: fat::BlockDevice + 'static, T: fat::TimeSource 
     server: Server<D, T>,
     tls_config: Arc<ServerConfig>,
     mut socket: TcpSocket,
-) -> Result<(), ClosedError<AsyncRustlsError<TcpSocketError>>> {
+) -> Result<(), ReadExactError<AsyncRustlsError<TcpSocketError>>> {
     socket
         .accept(HTTPS_PORT)
         .await
@@ -138,11 +137,7 @@ async fn use_socket_for_https<D: fat::BlockDevice + 'static, T: fat::TimeSource 
 
     server.handle_connection(&mut conn).await?;
 
-    // TODO TcpSocket doesn't support stateless .poll_close() yet, so we close the socket directly
-    conn.into_io()
-        .close()
-        .await
-        .map_err(AsyncRustlsError::TransitError)?;
+    conn.into_io().close();
 
     Ok(())
 }
@@ -173,14 +168,15 @@ fn mk_tls_config(
         _ => panic!(),
     };
 
-    let mut config = ServerConfig::builder_with_protocol_versions(&[&TLS12])
-        .with_no_client_auth()
-        .with_single_cert(vec![cert_der], key_der)
-        .unwrap();
-    config.time_provider = TimeProvider::new(GetCurrentTimeImpl::new(
-        UnixTime::since_unix_epoch(now_unix_time),
-        now_fn,
-    ));
+    let time_provider = TimeProviderImpl::new(UnixTime::since_unix_epoch(now_unix_time), now_fn);
 
-    config
+    ServerConfig::builder_with_details(
+        Arc::new(rustls::crypto::ring::default_provider()),
+        Arc::new(time_provider),
+    )
+    .with_protocol_versions(&[&TLS12])
+    .unwrap()
+    .with_no_client_auth()
+    .with_single_cert(vec![cert_der], key_der)
+    .unwrap()
 }
