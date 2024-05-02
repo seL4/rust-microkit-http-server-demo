@@ -4,8 +4,6 @@
 # SPDX-License-Identifier: BSD-2-Clause
 #
 
-RUST_SEL4 ?= /dev/null
-
 work_root := ..
 
 id := rust-microkit-http-server-demo
@@ -28,7 +26,6 @@ build:
 run: build
 	docker run -d --name $(container_name) \
 		--mount type=bind,src=$(abspath $(work_root)),dst=/work \
-		--mount type=bind,src=$(abspath $(RUST_SEL4)),dst=/rust-sel4 \
 		--publish 9080:8080/tcp \
 		--publish 9443:8443/tcp \
 		$(image_tag) sleep inf
@@ -47,6 +44,6 @@ rm-container:
 test: build
 	docker run --rm \
 		--mount type=bind,readonly,src=$(abspath $(work_root)),dst=/work \
-		--mount type=bind,readonly,src=$(abspath $(RUST_SEL4)),dst=/rust-sel4 \
-		-i $(image_tag) \
+		-i $$([ -t 0 ] && echo -t) \
+		$(image_tag) \
 		make test BUILD=/tmp/build
