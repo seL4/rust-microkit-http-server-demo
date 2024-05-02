@@ -8,10 +8,6 @@ BUILD ?= build
 
 build_dir := $(BUILD)
 
-microkit_board := qemu_virt_aarch64
-microkit_config := debug
-microkit_sdk_config_dir := $(MICROKIT_SDK)/board/$(microkit_board)/$(microkit_config)
-
 .PHONY: none
 none:
 
@@ -19,52 +15,49 @@ none:
 clean:
 	rm -rf $(build_dir)
 
+microkit_board := qemu_virt_aarch64
+microkit_config := debug
+microkit_sdk_config_dir := $(MICROKIT_SDK)/board/$(microkit_board)/$(microkit_config)
+
+sel4_include_dirs := $(microkit_sdk_config_dir)/include
+
 ### Protection domains
+
+target := aarch64-sel4-microkit
 
 target_cc := aarch64-none-elf-gcc
 
-rust_target_path := support/targets
-rust_microkit_target := aarch64-sel4-microkit
-target_dir := $(build_dir)/target
-
-common_env := \
-	CC_$(subst -,_,$(rust_microkit_target))=$(target_cc) \
-	SEL4_INCLUDE_DIRS=$(abspath $(microkit_sdk_config_dir)/include)
-
-common_options := \
-	-Z build-std=core,alloc,compiler_builtins \
-	-Z build-std-features=compiler-builtins-mem \
-	--target $(rust_microkit_target) \
-	--release \
-	--target-dir $(abspath $(target_dir)) \
-	--out-dir $(abspath $(build_dir))
-
-target_for_crate = $(build_dir)/$(1).elf
-intermediate_target_for_crate = $(build_dir)/$(1).intermediate
+crate = $(build_dir)/$(1).elf
 
 define build_crate
 
-$(target_for_crate): $(intermediate_target_for_crate)
+$(crate): $(crate).intermediate
 
-.INTERMDIATE: $(intermediate_target_for_crate)
-$(intermediate_target_for_crate):
-	$$(common_env) \
+.INTERMDIATE: $(crate).intermediate
+$(crate).intermediate:
+	CC_$(subst -,_,$(target))=$(target_cc) \
+	SEL4_INCLUDE_DIRS=$(abspath $(sel4_include_dirs)) \
 		cargo build \
-			$$(common_options) \
+			-Z build-std=core,alloc,compiler_builtins \
+			-Z build-std-features=compiler-builtins-mem \
+			--target-dir $(build_dir)/target \
+			--out-dir $(build_dir) \
+			--target $(target) \
+			--release \
 			-p $(1)
 
 endef
 
-crates := \
+crate_names := \
 	microkit-http-server-example-server \
 	microkit-http-server-example-pl031-driver \
 	microkit-http-server-example-sp804-driver \
 	microkit-http-server-example-virtio-net-driver \
 	microkit-http-server-example-virtio-blk-driver
 
-built_crates := $(foreach crate,$(crates),$(call target_for_crate,$(crate)))
+crates := $(foreach crate_name,$(crate_names),$(call crate,$(crate_name)))
 
-$(eval $(foreach crate,$(crates),$(call build_crate,$(crate))))
+$(eval $(foreach crate_name,$(crate_names),$(call build_crate,$(crate_name))))
 
 ### Loader
 
@@ -72,7 +65,7 @@ system_description := http-server.system
 
 loader := $(build_dir)/loader.img
 
-$(loader): $(system_description) $(built_crates)
+$(loader): $(system_description) $(crates)
 	$(MICROKIT_SDK)/bin/microkit \
 		$< \
 		--search-path $(build_dir) \
@@ -92,9 +85,9 @@ $(disk_img): $(compressed_disk_img)
 qemu_cmd := \
 	qemu-system-aarch64 \
 		-machine virt -cpu cortex-a53 -m size=2G \
-		-device loader,file=$(loader),addr=0x70000000,cpu-num=0 \
 		-serial mon:stdio \
 		-nographic \
+		-device loader,file=$(loader),addr=0x70000000,cpu-num=0 \
 		-device virtio-net-device,netdev=netdev0 \
 		-netdev user,id=netdev0,hostfwd=tcp::8080-:80,hostfwd=tcp::8443-:443 \
 		-device virtio-blk-device,drive=blkdev0 \
