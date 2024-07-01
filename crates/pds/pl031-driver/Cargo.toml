@@ -17,7 +17,6 @@ edition = "2021"
 license = "BSD-2-Clause"
 
 [dependencies]
-microkit-http-server-example-pl031-driver-core = { path = "core" }
-microkit-http-server-example-pl031-driver-interface-types = { path = "interface-types" }
 sel4-microkit = { git = "https://github.com/seL4/rust-sel4", default-features = false }
-sel4-microkit-message = { git = "https://github.com/seL4/rust-sel4" }
+sel4-microkit-driver-adapters = { git = "https://github.com/seL4/rust-sel4" }
+sel4-pl031-driver = { git = "https://github.com/seL4/rust-sel4" }

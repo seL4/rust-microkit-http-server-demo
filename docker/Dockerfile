@@ -19,16 +19,19 @@ RUN apt-get update -q && apt-get install -y --no-install-recommends \
     libslirp-dev \
     # for microkit
     python3-venv \
-    musl-tools \
-    pandoc \
-    texlive-latex-base \
-    texlive-latex-extra \
-    texlive-fonts-recommended \
     # for test script
     python3-requests \
     # for hacking
     bash-completion man sudo \
     && rm -rf /var/lib/apt/lists/*
+
+RUN curl -sSf https://sh.rustup.rs | \
+        bash -s -- -y --no-modify-path \
+            --default-toolchain nightly-2024-05-01 \
+            --component rust-src \
+            --target x86_64-unknown-linux-musl
+
+ENV PATH=/root/.cargo/bin:$PATH
 
 RUN set -eux; \
     url="https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-aarch64-none-elf.tar.xz"; \
@@ -56,7 +59,7 @@ RUN set -eux; \
 
 ENV PATH=/opt/qemu/bin:$PATH
 
-ENV MICROKIT_SDK_VERSION=1.2.6
+ENV MICROKIT_SDK_VERSION=1.3.0
 ENV MICROKIT_SDK=/opt/microkit/microkit-sdk-$MICROKIT_SDK_VERSION
 
 RUN set -eux; \
@@ -64,12 +67,12 @@ RUN set -eux; \
         https://github.com/seL4/microkit.git \
         --config advice.detachedHead=false; \
     cd microkit; \
-    git checkout f0939852c62c629346cd3eddbe7d8922eca8530a; \
+    git checkout 1ccdfcb3b224533c965fd6508de3dd56657f959c; \
     git clone \
         https://github.com/seL4/seL4.git \
         --config advice.detachedHead=false; \
     cd seL4; \
-    git checkout 57975d485397ce1744f7163644dd530560d0b7ec;
+    git checkout 0cdbffec9cf6b4c7c9c57971cbee5a24a70c8fd0;
 
 RUN set -eux; \
     cd microkit; \
@@ -77,10 +80,9 @@ RUN set -eux; \
     ./pyenv/bin/pip install --upgrade pip setuptools wheel; \
     ./pyenv/bin/pip install -r requirements.txt; \
     ./pyenv/bin/pip install sel4-deps; \
-    ./pyenv/bin/python3 build_sdk.py --sel4 ./seL4; \
+    ./pyenv/bin/python3 build_sdk.py --sel4 ./seL4 --skip-docs; \
     mkdir $(dirname $MICROKIT_SDK); \
     mv release/microkit-sdk-$MICROKIT_SDK_VERSION $MICROKIT_SDK; \
-    rm -rf $HOME/.cache/pyoxidizer; \
     rm -rf $(pwd);
 
 ARG UID
