@@ -9,20 +9,14 @@
 resolver = "2"
 
 members = [
-    "crates/helpers/virtio-hal-impl",
     "crates/pds/server",
     "crates/pds/server/core",
     "crates/pds/pl031-driver",
-    "crates/pds/pl031-driver/core",
-    "crates/pds/pl031-driver/interface-types",
     "crates/pds/sp804-driver",
-    "crates/pds/sp804-driver/core",
-    "crates/pds/sp804-driver/interface-types",
     "crates/pds/virtio-blk-driver",
     "crates/pds/virtio-net-driver",
-    "crates/pds/virtio-net-driver/interface-types",
 ]
 
 [patch.crates-io.ring]
 git = "https://github.com/coliasgroup/ring.git"
-rev = "0e644b7837cffcd53a3ff67d7f478801b4e9e0ed"
+rev = "0f749acc5d5a8310dfc3ff985df04056f497fc1b"

@@ -84,7 +84,7 @@ $(disk_img): $(compressed_disk_img)
 
 qemu_cmd := \
 	qemu-system-aarch64 \
-		-machine virt -cpu cortex-a53 -m size=2G \
+		-machine virt,virtualization=on -cpu cortex-a53 -m size=2G \
 		-serial mon:stdio \
 		-nographic \
 		-device loader,file=$(loader),addr=0x70000000,cpu-num=0 \
