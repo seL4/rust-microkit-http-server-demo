@@ -38,10 +38,8 @@ $(crate).intermediate:
 	CC_$(subst -,_,$(target))=$(target_cc) \
 	SEL4_INCLUDE_DIRS=$(abspath $(sel4_include_dirs)) \
 		cargo build \
-			-Z build-std=core,alloc,compiler_builtins \
-			-Z build-std-features=compiler-builtins-mem \
 			--target-dir $(build_dir)/target \
-			--out-dir $(build_dir) \
+			--artifact-dir $(build_dir) \
 			--target $(target) \
 			--release \
 			-p $(1)
