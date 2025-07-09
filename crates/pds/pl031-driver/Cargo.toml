@@ -17,6 +17,6 @@ edition = "2021"
 license = "BSD-2-Clause"
 
 [dependencies]
-sel4-microkit = { git = "https://github.com/seL4/rust-sel4", default-features = false }
+sel4-microkit = { git = "https://github.com/seL4/rust-sel4" }
 sel4-microkit-driver-adapters = { git = "https://github.com/seL4/rust-sel4" }
 sel4-pl031-driver = { git = "https://github.com/seL4/rust-sel4" }

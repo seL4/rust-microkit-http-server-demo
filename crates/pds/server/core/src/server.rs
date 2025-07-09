@@ -237,7 +237,7 @@ impl<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static> Server<D, T> {
                     }
                 }
                 Err(err) => {
-                    log::warn!("{:?}: {:?}", err, request_path);
+                    log::warn!("{err:?}: {request_path:?}");
                     if cur != self.dir {
                         volume_manager.close_dir(cur).unwrap();
                     }
@@ -247,7 +247,7 @@ impl<D: fat::BlockDevice + 'static, T: fat::TimeSource + 'static> Server<D, T> {
         }
         if !has_trailing_slash {
             RequestPathStatus::MovedPermanently {
-                location: format!("{}/", request_path),
+                location: format!("{request_path}/"),
             }
         } else {
             let file_name = "index.html";

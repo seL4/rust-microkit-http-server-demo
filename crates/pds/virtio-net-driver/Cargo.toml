@@ -19,13 +19,12 @@ license = "BSD-2-Clause"
 [dependencies]
 log = "0.4.17"
 sel4 = { git = "https://github.com/seL4/rust-sel4" }
-sel4-bounce-buffer-allocator = { git = "https://github.com/seL4/rust-sel4" }
-sel4-externally-shared = { git = "https://github.com/seL4/rust-sel4", features = ["unstable"] }
+sel4-abstract-allocator = { git = "https://github.com/seL4/rust-sel4" }
 sel4-immediate-sync-once-cell = { git = "https://github.com/seL4/rust-sel4" }
 sel4-logging = { git = "https://github.com/seL4/rust-sel4" }
-sel4-microkit = { git = "https://github.com/seL4/rust-sel4", default-features = false }
+sel4-microkit = { git = "https://github.com/seL4/rust-sel4" }
 sel4-microkit-driver-adapters = { git = "https://github.com/seL4/rust-sel4" }
-sel4-microkit-message = { git = "https://github.com/seL4/rust-sel4" }
+sel4-shared-memory = { git = "https://github.com/seL4/rust-sel4" }
 sel4-shared-ring-buffer = { git = "https://github.com/seL4/rust-sel4" }
 sel4-virtio-hal-impl = { git = "https://github.com/seL4/rust-sel4" }
 sel4-virtio-net = { git = "https://github.com/seL4/rust-sel4" }

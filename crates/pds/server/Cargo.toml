@@ -17,37 +17,31 @@ edition = "2021"
 license = "BSD-2-Clause"
 
 [dependencies]
-async-unsync = { version = "0.2.2", default-features = false }
+async-unsync = { version = "0.3.0", default-features = false }
 futures = { version = "0.3.28", default-features = false, features = ["async-await", "alloc"] }
-lock_api = "0.4.12"
 log = "0.4.17"
 microkit-http-server-example-server-core = { path = "core", features = [] }
+one-shot-mutex = "0.2.1"
 rtcc = "0.3.2"
 sel4 = { git = "https://github.com/seL4/rust-sel4" }
+sel4-abstract-allocator = { git = "https://github.com/seL4/rust-sel4" }
 sel4-async-block-io = { git = "https://github.com/seL4/rust-sel4" }
 sel4-async-block-io-fat = { git = "https://github.com/seL4/rust-sel4" }
 sel4-async-network = { git = "https://github.com/seL4/rust-sel4" }
 sel4-async-time = { git = "https://github.com/seL4/rust-sel4" }
-sel4-bounce-buffer-allocator = { git = "https://github.com/seL4/rust-sel4" }
 sel4-driver-interfaces = { git = "https://github.com/seL4/rust-sel4" }
-sel4-externally-shared = { git = "https://github.com/seL4/rust-sel4", features = ["unstable"] }
 sel4-immediate-sync-once-cell = { git = "https://github.com/seL4/rust-sel4" }
 sel4-logging = { git = "https://github.com/seL4/rust-sel4" }
+sel4-microkit = { git = "https://github.com/seL4/rust-sel4", features = ["alloc"] }
 sel4-microkit-driver-adapters = { git = "https://github.com/seL4/rust-sel4" }
-sel4-microkit-message = { git = "https://github.com/seL4/rust-sel4" }
 sel4-newlib = { git = "https://github.com/seL4/rust-sel4", features = ["nosys", "all-symbols"] }
+sel4-shared-memory = { git = "https://github.com/seL4/rust-sel4" }
 sel4-shared-ring-buffer = { git = "https://github.com/seL4/rust-sel4" }
 sel4-shared-ring-buffer-block-io = { git = "https://github.com/seL4/rust-sel4" }
 sel4-shared-ring-buffer-smoltcp = { git = "https://github.com/seL4/rust-sel4" }
-sel4-sync = { git = "https://github.com/seL4/rust-sel4" }
 
 [dependencies.sel4-async-single-threaded-executor]
 git = "https://github.com/seL4/rust-sel4"
-
-[dependencies.sel4-microkit]
-git = "https://github.com/seL4/rust-sel4"
-default-features = false
-features = ["alloc"]
 
 [dependencies.sel4-shared-ring-buffer-block-io-types]
 git = "https://github.com/seL4/rust-sel4"
@@ -56,7 +50,7 @@ git = "https://github.com/seL4/rust-sel4"
 git = "https://github.com/seL4/rust-sel4"
 
 [dependencies.smoltcp]
-version = "0.10.0"
+version = "0.11.0"
 default-features = false
 features = [
     "proto-ipv4",
@@ -69,4 +63,4 @@ features = [
 ]
 
 [build-dependencies]
-rcgen = "0.11.1"
+rcgen = "0.13.1"

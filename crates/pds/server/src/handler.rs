@@ -11,20 +11,20 @@ use core::pin::Pin;
 use core::time::Duration;
 
 use futures::future::LocalBoxFuture;
-use lock_api::Mutex;
+use one_shot_mutex::sync::OneShotMutex;
 use smoltcp::iface::Config;
 use smoltcp::time::Instant as SmoltcpInstant;
 
+use sel4_abstract_allocator::basic::BasicAllocator;
+use sel4_abstract_allocator::WithAlignmentBound;
 use sel4_async_block_io::{access::ReadOnly, constant_block_sizes::BlockSize512};
 use sel4_async_network::{DhcpOverrides, ManagedInterface};
 use sel4_async_single_threaded_executor::{LocalPool, LocalSpawner};
 use sel4_async_time::{Instant, TimerManager};
-use sel4_bounce_buffer_allocator::Basic;
 use sel4_driver_interfaces::timer::{Clock, DefaultTimer, Timer};
-use sel4_microkit::{Channel, Handler, Infallible};
+use sel4_microkit::{ChannelSet, Handler, Infallible};
 use sel4_microkit_driver_adapters::timer::client::Client as TimerClient;
 use sel4_shared_ring_buffer_block_io::SharedRingBufferBlockIO;
-use sel4_sync::PanickingRawMutex;
 
 use crate::DeviceImpl;
 
@@ -34,9 +34,10 @@ pub(crate) struct HandlerImpl {
     timer_driver_channel: sel4_microkit::Channel,
     net_driver_channel: sel4_microkit::Channel,
     block_driver_channel: sel4_microkit::Channel,
-    timer: Arc<Mutex<PanickingRawMutex, DefaultTimer<TimerClient>>>,
-    net_device: DeviceImpl<Basic>,
-    shared_block_io: SharedRingBufferBlockIO<BlockSize512, ReadOnly, Basic, fn()>,
+    timer: Arc<OneShotMutex<DefaultTimer<TimerClient>>>,
+    net_device: DeviceImpl<WithAlignmentBound<BasicAllocator>>,
+    shared_block_io:
+        SharedRingBufferBlockIO<BlockSize512, ReadOnly, WithAlignmentBound<BasicAllocator>, fn()>,
     shared_timers: TimerManager,
     shared_network: ManagedInterface,
     local_pool: LocalPool,
@@ -49,10 +50,15 @@ impl HandlerImpl {
         timer_driver_channel: sel4_microkit::Channel,
         net_driver_channel: sel4_microkit::Channel,
         block_driver_channel: sel4_microkit::Channel,
-        timer: Arc<Mutex<PanickingRawMutex, DefaultTimer<TimerClient>>>,
-        mut net_device: DeviceImpl<Basic>,
+        timer: Arc<OneShotMutex<DefaultTimer<TimerClient>>>,
+        mut net_device: DeviceImpl<WithAlignmentBound<BasicAllocator>>,
         net_config: Config,
-        shared_block_io: SharedRingBufferBlockIO<BlockSize512, ReadOnly, Basic, fn()>,
+        shared_block_io: SharedRingBufferBlockIO<
+            BlockSize512,
+            ReadOnly,
+            WithAlignmentBound<BasicAllocator>,
+            fn(),
+        >,
         f: impl FnOnce(TimerManager, ManagedInterface, LocalSpawner) -> T,
     ) -> Self {
         let now = Self::now_with_timer_client(&timer);
@@ -94,9 +100,7 @@ impl HandlerImpl {
         Self::now_with_timer_client(&self.timer)
     }
 
-    fn now_with_timer_client(
-        timer: &Arc<Mutex<PanickingRawMutex, DefaultTimer<TimerClient>>>,
-    ) -> Instant {
+    fn now_with_timer_client(timer: &Arc<OneShotMutex<DefaultTimer<TimerClient>>>) -> Instant {
         Instant::new(timer.lock().get_time().unwrap())
     }
 
@@ -144,11 +148,11 @@ impl HandlerImpl {
 impl Handler for HandlerImpl {
     type Error = Infallible;
 
-    fn notified(&mut self, channel: Channel) -> Result<(), Self::Error> {
+    fn notified(&mut self, channels: ChannelSet) -> Result<(), Self::Error> {
         self.react(
-            channel == self.timer_driver_channel,
-            channel == self.net_driver_channel,
-            channel == self.block_driver_channel,
+            channels.contains(self.timer_driver_channel),
+            channels.contains(self.net_driver_channel),
+            channels.contains(self.block_driver_channel),
         );
         Ok(())
     }
