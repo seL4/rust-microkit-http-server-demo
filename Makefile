@@ -23,7 +23,7 @@ sel4_include_dirs := $(microkit_sdk_config_dir)/include
 
 ### Protection domains
 
-target := aarch64-sel4-microkit
+target := aarch64-sel4
 
 target_cc := aarch64-none-elf-gcc
 
@@ -40,7 +40,6 @@ $(crate).intermediate:
 		cargo build \
 			--target-dir $(build_dir)/target \
 			--artifact-dir $(build_dir) \
-			--target $(target) \
 			--release \
 			-p $(1)
 
