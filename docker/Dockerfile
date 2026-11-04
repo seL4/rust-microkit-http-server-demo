@@ -62,7 +62,7 @@ RUN set -eux; \
     mkdir -p $MICROKIT_SDK; \
     cd $MICROKIT_SDK; \
     curl -L \
-        "https://github.com/seL4/microkit/releases/download/2.1.0/microkit-sdk-2.1.0-linux-x86-64.tar.gz" \
+        "https://github.com/seL4/microkit/releases/download/2.4.0/microkit-sdk-2.4.0-linux-x86-64.tar.gz" \
             | tar -xzf - --strip-components=1; \
     chmod -R a+X .; # HACK
 
